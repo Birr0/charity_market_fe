@@ -9,7 +9,7 @@ export const Home = () => {
         <>
             <Template component={
                 <div style={{marginTop:'20px'}}>
-                    <ProductView productData={{title:'Beleek Vase', price:'£10', shortDescription:'New Item', detailedDescription: ''}} />
+                    <ProductView productData={{title:'Beleek Vase', price:'£10', shortDescription:'New Item. Lorem iPsmu ad infintum', detailedDescription: ''}} />
                 </div>
             } />
         </>
