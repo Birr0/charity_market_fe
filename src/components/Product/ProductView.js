@@ -14,6 +14,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import {useState} from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { addLineItem } from "../../storage/basketSlice";
 //Add title, description to product function ...
 
 export const ProductView = ({productData}) => {
@@ -24,6 +26,10 @@ export const ProductView = ({productData}) => {
     const handleImageViewerClose = () => {
         openViewer(false);
     }
+
+    const count = useSelector((state) => state.basket)
+    const dispatch = useDispatch();
+
     return( 
         <div style={{marginTop:"80px"}}>
             
@@ -59,10 +65,10 @@ export const ProductView = ({productData}) => {
                             <Typography>{productData.shortDescription}</Typography>
                             <br></br>
                             <Grid>
-                                <Button variant="outlined" style={{backgroundColor:"white"}}>Buy Now</Button>                            
+                                <Button variant="outlined" onClick={() => addLineItem()} style={{backgroundColor:"white"}}>Buy Now</Button>                            
                                 <Tooltip title="Add to Basket">
-                                    <IconButton aria-label="Add To Basket">
-                                        <ShoppingBasketIcon />
+                                    <IconButton aria-label="Add To Basket" >
+                                        <ShoppingBasketIcon onClick={(productData) => dispatch(addLineItem({payload: {productData}}))}/>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>      
