@@ -9,7 +9,7 @@ export const Home = () => {
         <>
             <Template component={
                 <div style={{marginTop:'20px'}}>
-                    <ProductView productData={{sku:'123', title:'Beleek Vase', price: 10, 
+                    <ProductView productData={{sku:'123', title:'Beleek Vase', price: 10, quantity: 1, availableQuantity: 1,
                         shortDescription:'New Item. Lorem iPsmu ad infintum', 
                         detailedDescription: 'This is an even longer description of the product. Lots of things to say? Say them here', 
                         attributes: {'dimensions': 

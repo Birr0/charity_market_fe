@@ -10,23 +10,40 @@ export const basketSlice = createSlice({
 
     reducers: {
         addToCart: (state, action) => {
-            state.cart.lineItems.push(action.payload);
-            state.cart.total += Number(action.payload.price);
-            localStorage.setItem('cart', JSON.stringify(state.cart));
+            state.cart.lineItems.length > 0 ? state.cart.lineItems.filter(item => {
+                if(item.sku === action.payload.sku){
+                    item.quantity += 1; // untested...
+                    //state.cart.total += Number(action.payload.price);
+                    //localStorage.setItem('cart', JSON.stringify(state.cart));
+                    console.log(state.cart);      }
+            }
+            ) :     state.cart.lineItems.push(action.payload);
+                    state.cart.total += Number(action.payload.price);
+                    localStorage.setItem('cart', JSON.stringify(state.cart));
+            
+            //state.cart.lineItems.push(action.payload);
+            //state.cart.total += Number(action.payload.price);
+            //localStorage.setItem('cart', JSON.stringify(state.cart));
             //quantity check ; if item already exists in basket. If exists, then add to quantity in lineItem
         },
         deleteFromCart: (state, action) => {
-            state.cart.lineItems = state.cart.lineItems.filter(item => 
-                item.sku !== action.payload.sku
-            );
-            state.cart.total -= Number(action.payload.price);
+            state.cart.total -= Number(action.payload.price) * Number(action.payload.quantity);
+            
+            state.cart.lineItems = state.cart.lineItems.filter(item => {
+                
+             return (
+                 item.sku != action.payload.sku
+                );
+            });
+            //console.log(JSON.stringify(state.cart.lineItems));
+            
+            
             localStorage.setItem('cart', JSON.stringify(state.cart));
         },
 
         processCheckout: (state, action) => {
             console.log(action);
             window.location.href = "/payment";
-            
         },
         buyNow: (state, action) => {
             console.log(action);

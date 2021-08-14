@@ -10,7 +10,7 @@ import { deleteFromCart } from "../../storage/basketSlice";
 
 export const LineItem = ({productData, remove}) => {
     const dispatch = useDispatch();
-
+    console.log(productData);
     return(
         <Grid container justifyContent="space-around" alignItems="center" spacing={2}>
             <Grid item>
@@ -22,6 +22,8 @@ export const LineItem = ({productData, remove}) => {
                 
                     <Typography variant='h5'>{productData.title}</Typography>        
                     <Typography >{productData.price}</Typography>
+                    <Typography >{productData.quantity}</Typography>
+
                     <br></br>      
             </Grid>
             {remove ? 
@@ -30,7 +32,7 @@ export const LineItem = ({productData, remove}) => {
                     <IconButton aria-label="Add To Basket" onClick={
                         (e) => {
                             e.preventDefault();
-                            console.log(productData);
+                            //console.log(productData);
                             dispatch(deleteFromCart(productData));
                         }
                     }>
