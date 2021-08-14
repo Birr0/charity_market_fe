@@ -8,7 +8,10 @@ export const ImageViewer = ({src, viewerOpen, closeViewer}) => {
     return(
         <>
             <Backdrop open={viewerOpen} style={{height: "100%",  opacity: 1, zIndex: 100}} onClick={closeViewer}>
-               <img src={src} style={{maxWidth: "66.6%"}} /> 
+               <img 
+                alt=""
+                src={src} style={{maxWidth: "66.6%"}} 
+                /> 
             </Backdrop>
         </>
     );

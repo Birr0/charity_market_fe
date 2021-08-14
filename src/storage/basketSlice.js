@@ -1,30 +1,43 @@
+import { red } from "@material-ui/core/colors";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const basketSlice = createSlice({
     name: 'basket',
     initialState:{
-        value: localStorage.getItem('count') ? Number(localStorage.getItem('count')) : 0,
-        lineItems: localStorage.getItem('lineItems') ? localStorage.getItem('lineItems') : [],
+        cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : localStorage.setItem('cart', JSON.stringify({'total': 0, 'shipping': 0, 'lineItems': []})),
+        buyNowItem: localStorage.getItem('buyNowItem') ? JSON.parse(localStorage.getItem('buyNowItem')) : localStorage.setItem('buyNowItem', JSON.stringify({})), 
     },
-    reducers: {
-        increment: (state) => {
 
-            localStorage.setItem('count', state.value += 1)
+    reducers: {
+        addToCart: (state, action) => {
+            state.cart.lineItems.push(action.payload);
+            state.cart.total += Number(action.payload.price);
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+            //quantity check ; if item already exists in basket. If exists, then add to quantity in lineItem
         },
-        decrement: (state) => {
-            state.value -= 1
+        deleteFromCart: (state, action) => {
+            state.cart.lineItems = state.cart.lineItems.filter(item => 
+                item.sku !== action.payload.sku
+            );
+            state.cart.total -= Number(action.payload.price);
+            localStorage.setItem('cart', JSON.stringify(state.cart));
         },
-        incrementByAmount: (state, action) => {
-            state.value += action.payload
-        },
-        addLineItem: (state, action) => {
-            //console.log(JSON.stringify(action.payload));
+
+        processCheckout: (state, action) => {
+            console.log(action);
+            window.location.href = "/payment";
             
-            localStorage.setItem('lineItems', action.payload)
         },
+        buyNow: (state, action) => {
+            console.log(action);
+            state.buyNowItem = action.payload;
+            localStorage.setItem('buyNowItem', JSON.stringify(state.buyNowItem));
+            window.location.href = "/buy-now";
+        },
+        
     },
 })
 
-export const { increment, decrement, incrementByAmount, addLineItem } = basketSlice.actions
+export const { buyNow, deleteFromCart, addToCart, processCheckout } = basketSlice.actions
 
 export default basketSlice.reducer

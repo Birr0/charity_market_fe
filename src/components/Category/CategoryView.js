@@ -1,5 +1,5 @@
 import {Template} from "../Template/Template";
-import {ProductArray} from "../Product/ProductArray";
+//import {ProductArray} from "../Product/ProductArray";
 import Typography from "@material-ui/core/Typography";
 import {useParams} from "react-router-dom";
 

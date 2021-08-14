@@ -6,12 +6,19 @@ import reportWebVitals from './reportWebVitals';
 import store from "./storage/store";
 import { Provider } from "react-redux";
 
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js"
+
+const stripePromise = loadStripe("pk_test_qblFNYngBkEdjEZ16jxxoWSM");
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store} >
-      <App />
-    </Provider>
-  </React.StrictMode>,
+    <Elements stripe={stripePromise}>
+      <Provider store={store} >
+        <App />
+      </Provider>
+    </Elements>
+    </React.StrictMode>, 
   document.getElementById('root')
 );
 

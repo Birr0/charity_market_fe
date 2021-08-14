@@ -16,6 +16,7 @@ export const useStyles = makeStyles((theme) => ({
       fontFamily:'serif',
       marginRight: theme.spacing(1),
       fontWeight: '550',
+      textDecoration: 'none',
     },
     buttons: {
       position: 'absolute',
