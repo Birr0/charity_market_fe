@@ -1,4 +1,3 @@
-import { red } from "@material-ui/core/colors";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const basketSlice = createSlice({
@@ -10,33 +9,46 @@ export const basketSlice = createSlice({
 
     reducers: {
         addToCart: (state, action) => {
-            state.cart.lineItems.length > 0 ? state.cart.lineItems.filter(item => {
-                if(item.sku === action.payload.sku){
-                    item.quantity += 1; // untested...
-                    //state.cart.total += Number(action.payload.price);
-                    //localStorage.setItem('cart', JSON.stringify(state.cart));
-                    console.log(state.cart);      }
-            }
-            ) :     state.cart.lineItems.push(action.payload);
-                    state.cart.total += Number(action.payload.price);
-                    localStorage.setItem('cart', JSON.stringify(state.cart));
+            var itemFound = false;
             
-            //state.cart.lineItems.push(action.payload);
-            //state.cart.total += Number(action.payload.price);
-            //localStorage.setItem('cart', JSON.stringify(state.cart));
-            //quantity check ; if item already exists in basket. If exists, then add to quantity in lineItem
+            if(state.cart.lineItems.length > 0){
+                state.cart.lineItems.map(item => {
+                if(item.sku === action.payload.sku){
+                    item.quantity += 1;
+                    itemFound = true;
+                    return;
+                }
+                
+                });
+            }
+
+            if(itemFound === false){
+                state.cart.lineItems.push(action.payload);
+            }
+
+            state.cart.total += Number(action.payload.price);
+            
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+
         },
         deleteFromCart: (state, action) => {
-            state.cart.total -= Number(action.payload.price) * Number(action.payload.quantity);
-            
-            state.cart.lineItems = state.cart.lineItems.filter(item => {
+            state.cart.total -= Number(action.payload.price);
+  
+            if(action.payload.quantity > 1){
+                state.cart.lineItems.map(item => {
+                    if(item.sku === action.payload.sku){
+                        item.quantity -= 1;
+                        
+                    }
+                })
+            }
+            else{
+                state.cart.lineItems = state.cart.lineItems.filter(item => {
                 
-             return (
-                 item.sku != action.payload.sku
-                );
-            });
-            //console.log(JSON.stringify(state.cart.lineItems));
-            
+                return item.sku !== action.payload.sku; 
+                }
+            );
+            }
             
             localStorage.setItem('cart', JSON.stringify(state.cart));
         },

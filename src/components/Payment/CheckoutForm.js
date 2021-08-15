@@ -4,17 +4,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import Paper from "@material-ui/core/Paper";
-
-
-
-
+import TextField from "@material-ui/core/TextField";
+import Alert from '@material-ui/lab/Alert';
+import Button from "@material-ui/core/Button";
 
 export default function CheckoutForm() {
 
   const stripe = useStripe();
   const elements = useElements();
-
-  
 
   const formik = useFormik({
     initialValues:{
@@ -22,29 +19,28 @@ export default function CheckoutForm() {
       email: '',
       addressLine1: '',
       addressLine2: '',
-
     },
     validationSchema: Yup.object({
 
-      name: Yup.string()
+      _name: Yup.string()
 
-        .max(15, 'Must be 15 characters or less')
+        .max(60)
 
-        .required('Required'),
+        .required('Name is required'),
 
       addressLine1: Yup.string()
 
-        .max(20, 'Must be 20 characters or less')
+        .max(60)
 
-        .required('Required'),
+        .required('An address is required'),
       
-      addressLine1: Yup.string()
+      addressLine2: Yup.string()
 
-        .max(20, 'Must be 20 characters or less')
+        .max(60, 'Must be 20 characters or less'),
+      
+      city: Yup.string().max(60).required('City is required'),
 
-        .required('Required'),
-
-      email: Yup.string().email('Invalid email address').required('Required'),
+      email: Yup.string().email('Invalid email address').required('An e-mail address is required.'),
 
     }),
 
@@ -57,8 +53,6 @@ export default function CheckoutForm() {
   });
 
   const handleStripeRequest = async () => {
-  
-   
   
     if (!stripe || !elements) {
     // Stripe.js has not yet loaded.
@@ -92,33 +86,21 @@ export default function CheckoutForm() {
   }
 
   return (
-        <Paper style={{marginTop: '10px',maxWidth:"600px", padding:"20px"}}>
+        <Paper style={{marginTop: '10px',maxWidth:"600px", padding:"20px", justifyContent:"center"}}>
             <form onSubmit={formik.handleSubmit}>
-                <label>Name:</label>
-                <input type="text" id="name" name="name"
-                onChange={formik.handleChange}
-
-                onBlur={formik.handleBlur}
-       
-                value={formik.values.firstName}
-                />
+                <TextField id="_name" name="_name" label="name" variant="filled" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
+                {formik.touched._name && formik.errors._name ? (
+                  <Alert severity="error" style={{maxWidth:"50%"}}>{formik.errors._name}</Alert>
+                  ) : null}
                 <br></br>
-                <label>e-mail address:</label>
-                <input 
-                  id="email"
-
-                  name="email"
-        
-                  type="email"
-        
-                  onChange={formik.handleChange}
-        
-                  onBlur={formik.handleBlur}
-        
-                  value={formik.values.email}/>
+                
+                <TextField id="email" name="email" type="email" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email} variant="filled" label="e-mail address" />
+                {formik.touched.email && formik.errors.email ? (
+                  <Alert severity="error" style={{maxWidth:"50%"}}>{formik.errors.email}</Alert>
+                  ) : null}
                 <br></br>
-                <label>Address line 1</label>
-                <input type="text" 
+               
+                <TextField type="text" 
                 id="addressLine1"
 
                 name="addressLine1"
@@ -129,10 +111,17 @@ export default function CheckoutForm() {
        
                 onBlur={formik.handleBlur}
        
-                value={formik.values.addressLine1}/>
+                value={formik.values.addressLine1}
+                
+                variant="filled" 
+                
+                label="Address Line 1"/>
+                {formik.touched.addressLine1 && formik.errors.addressLine1 ? (
+                  <Alert severity="error" style={{maxWidth:"50%"}}>{formik.errors.addressLine1}</Alert>
+                  ) : null}
                 <br></br>
-                <label>Address line 2</label>
-                <input type="text" 
+                
+                <TextField type="text" 
                 id="addressLine2"
 
                 name="addressLine2"
@@ -143,19 +132,37 @@ export default function CheckoutForm() {
        
                 onBlur={formik.handleBlur}
        
-                value={formik.values.addressLine2}/>
+                value={formik.values.addressLine2}
+                
+                label="Address Line 2"
+
+                variant="filled"
+                />
                 <br></br>
-                {formik.touched.email && formik.errors.email ? (
+                <TextField type="text" 
+                id="city"
 
-                  <div>{formik.errors.email}</div>
+                name="city"
+       
+                type="text"
+       
+                onChange={formik.handleChange}
+       
+                onBlur={formik.handleBlur}
+       
+                value={formik.values.city}
+                
+                label="City/Town"
 
-                  ) : null}
-                  <br></br>
+                variant="filled"
+                />
+                <br></br>
 
-                <div style={{maxWidth:"300px"}}>
+                <div style={{maxWidth:"300px", marginTop:"20px"}}>
                     <CardSection />
                 </div>
-                <button disabled={!stripe}>Confirm order</button>
+                <br></br>
+                <Button disabled={!stripe} variant="outlined">Confirm order</Button>
             </form>
         </Paper>
   );
