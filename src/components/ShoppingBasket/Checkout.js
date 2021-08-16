@@ -3,7 +3,6 @@ import {useStyles} from "../Styles/Styles";
 import { LineItem } from "./LineItem";
 import {EmptyBasket} from "./EmptyBasket";
 import {processCheckout} from "../../storage/basketSlice";
-
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
@@ -21,7 +20,6 @@ export const Checkout = () => {
         <Template component={
             <div className={classes.pageContent}>
                 <h1>Checkout</h1>
-
                 {cart.lineItems.length > 0 ?
                     <>
                         {cart.lineItems.map(item => {

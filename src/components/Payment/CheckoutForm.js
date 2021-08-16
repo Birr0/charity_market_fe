@@ -38,7 +38,7 @@ export default function CheckoutForm() {
 
         .max(60, 'Must be 20 characters or less'),
       
-      city: Yup.string().max(60).required('City is required'),
+      city: Yup.string().max(60).required('City/Town is required'),
 
       email: Yup.string().email('Invalid email address').required('An e-mail address is required.'),
 
@@ -156,6 +156,11 @@ export default function CheckoutForm() {
 
                 variant="filled"
                 />
+                <br></br>
+                {formik.touched.addressLine1 && formik.errors.city ? (
+                  <Alert severity="error" style={{maxWidth:"50%"}}>{formik.errors.city}</Alert>
+                  ) : null}
+                
                 <br></br>
 
                 <div style={{maxWidth:"300px", marginTop:"20px"}}>

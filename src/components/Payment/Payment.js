@@ -26,11 +26,7 @@ export const Payment = () => {
                     );
                 })}
                 <CheckoutForm />
-                <p>TODO</p>
-                <p>Form - Styling, Formik etc.</p>
-                <p>Invoice Component - items on receipt with totals and cost breakdown</p>
-                <p>Connect Backend</p>
-                <p>Check logic on stripe FE logic</p>
+                
             </div>
         }
         />

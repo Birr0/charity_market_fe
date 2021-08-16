@@ -21,8 +21,8 @@ export const LineItem = ({productData, remove}) => {
             <Grid item>
                 
                     <Typography variant='h5'>{productData.title}</Typography>        
-                    <Typography >{productData.price}</Typography>
-                    <Typography >{productData.quantity}</Typography>
+                    <Typography >{productData.price} GBP</Typography>
+                    <Typography >Quantity: {productData.quantity}</Typography>
 
                     <br></br>      
             </Grid>
