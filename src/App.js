@@ -12,6 +12,8 @@ import {PaymentSuccess} from "./components/Payment/PaymentSuccess";
 import {PaymentFailure} from "./components/Payment/PaymentFailure";
 import {BuyNow} from "./components/Payment/BuyNow";
 import {Loading} from "./components/Loading/Loading";
+import {ProductPage} from "./components/Product/ProductPage";
+
 
 function App() {
  
@@ -19,6 +21,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path='/' component={Home} /> 
+        <Route path="/product/:sku" component={ProductPage} />
         <Route path="/catalogue/:category/:subCategory?" component={CategoryView} />
         <Route path='/checkout' component={Checkout}/>         
         <Route exact path="/payment" component={Payment}/>

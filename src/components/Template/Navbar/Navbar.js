@@ -37,7 +37,7 @@ export default function Navbar() {
         <Toolbar>    
             <Tooltip title="Home">
               
-                <Link to="/">
+                <Link to="/" style={{'textDecoration': 'none'}}>
                   <Typography variant={desktop ? 'h4' : 'h6'} className={classes.title}>Rogers'</Typography>
                 </Link>
               

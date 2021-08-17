@@ -9,8 +9,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Paper from "@material-ui/core/Paper";
 import {ImageViewer} from "../ImageViewer/ImageViewer";
-import {BuyNow} from "../Payment/BuyNow";
-
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import Rating from '@material-ui/lab/Rating';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import {useState} from "react";
@@ -21,8 +21,6 @@ import { addToCart, buyNow } from "../../storage/basketSlice";
 
 export const ProductView = ({productData}) => {
 
-    
-    
     const [{viewerOpen, img}, openViewer] = useState({viwerOpen:false, img:null});
    
     const handleImageViewerClose = () => {
@@ -32,8 +30,7 @@ export const ProductView = ({productData}) => {
     const dispatch = useDispatch();
 
     return( 
-        <div style={{marginTop:"80px"}}>
-            
+        <div>
             <Grid container style={{maxWidth:"800px"}}>
             {viewerOpen ? <div><ImageViewer src={img} viewerOpen={viewerOpen} closeViewer={handleImageViewerClose} /></div> : null }
            
@@ -91,7 +88,15 @@ export const ProductView = ({productData}) => {
                                 </Tooltip>
                             </Grid>      
                         </Paper>
-                        <Typography style={{marginTop:"5px"}}>Shipping Information</Typography>          
+                        <Grid container spacing={2} style={{marginTop:"5px"}}>
+                            <Grid item>
+                                <LocalShippingIcon />
+                            </Grid>
+                            <Grid item>
+                                <Typography>Shipping: 3-5 days with First Class by Royal Mail</Typography>
+                            </Grid>
+                        </Grid>
+                        
                     </Grid>            
                 </Grid>
             </Grid>
@@ -102,9 +107,22 @@ export const ProductView = ({productData}) => {
                     id="panel1a-header"
                 >
                     <Typography>Additional Details</Typography>
+                    
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>{productData.detailedDescription}</Typography>
+                </AccordionDetails>
+
+                <AccordionDetails>
+                    <Grid container alignItems="center" spacing={2}>
+                        <Grid item>
+                            <Typography>Condition: Very Good</Typography>
+                        </Grid>
+                        <Grid item>
+                        <Rating name="size-medium" defaultValue={4} readOnly />
+                        </Grid>
+                    </Grid>
+
                 </AccordionDetails>
                 
                 {productData.details ? productData.details.map((detail, key) => {
