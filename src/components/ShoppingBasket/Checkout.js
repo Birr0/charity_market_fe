@@ -17,8 +17,9 @@ export const Checkout = () => {
     const cart = useSelector(state => state.basket.cart);
 
     return(
+        <>
         <Template component={
-            <div className={classes.pageContent}>
+            <div>
                 <h1>Checkout</h1>
                 {cart.lineItems.length > 0 ?
                     <>
@@ -40,10 +41,10 @@ export const Checkout = () => {
                     </>
                 : <EmptyBasket />}
                 
-                
-                
-            </div>
+            </div> 
+            
         }
         />
+        </>
     );
 }

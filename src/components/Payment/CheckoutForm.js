@@ -1,7 +1,13 @@
 import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
+import {useState} from "react";
 import {CardSection} from './CardSection';
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import {Redirect} from "react-router-dom";
+import {Get} from "../../api/fetchWrapper";
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from "../../storage/loadingSlice";
+import {Loading} from "../Loading/Loading";
 
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -13,12 +19,24 @@ export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
+  const [stripeError, setStripeError] = useState({});
+  const [stripeSuccess, setStripeSuccess] = useState(false);
+  
+  const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.loadingState);
+
+  useState(() => {
+    setStripeSuccess(null);
+    setStripeError({error: false, msg: null})
+  })
   const formik = useFormik({
     initialValues:{
-      name: '', // preload if user is signed
+      _name: '', // preload if user is signed
       email: '',
       addressLine1: '',
       addressLine2: '',
+      city: '',
     },
     validationSchema: Yup.object({
 
@@ -46,21 +64,28 @@ export default function CheckoutForm() {
 
     onSubmit: values => {
 
-      alert(JSON.stringify(values, null, 2));
-
+      //alert(JSON.stringify(values, null, 2));
+      Get('/payment').then(result => {
+        handleStripeRequest(result['client_secret']);
+      });
       
     },
   });
 
-  const handleStripeRequest = async () => {
-  
-    if (!stripe || !elements) {
+  const handleStripeRequest = async (clientSecret) => {
+
+    dispatch(setLoading({loading: true}));
+
+
+    if (!stripe || !elements || !clientSecret) {
     // Stripe.js has not yet loaded.
     // Make sure to disable form submission until Stripe.js has loaded.
+    console.log('Failure');
+    console.log(clientSecret);
     return;
     }
-  
-    const result = await stripe.confirmCardPayment('{CLIENT_SECRET}', {
+    
+    const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
@@ -73,6 +98,7 @@ export default function CheckoutForm() {
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       console.log(result.error.message);
+      setStripeError({error: true, msg: result.error.message })
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === 'succeeded') {
@@ -81,12 +107,20 @@ export default function CheckoutForm() {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
+        console.log(result.paymentIntent);
+        setStripeSuccess(true);
+        dispatch(setLoading({loading: false}));
+        
       }
     }
   }
 
   return (
+    <>
+      {loading ? <Loading /> : null}
         <Paper style={{marginTop: '10px',maxWidth:"600px", padding:"20px", justifyContent:"center"}}>
+            {stripeError.error ? <Alert severity="error">{stripeError.msg}</Alert> : null}
+            {stripeSuccess ? <Redirect to="/payment/success" /> : null}
             <form onSubmit={formik.handleSubmit}>
                 <TextField id="_name" name="_name" label="name" variant="filled" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.name} />
                 {formik.touched._name && formik.errors._name ? (
@@ -167,8 +201,10 @@ export default function CheckoutForm() {
                     <CardSection />
                 </div>
                 <br></br>
-                <Button disabled={!stripe} variant="outlined">Confirm order</Button>
+                <Button disabled={!stripe} variant="outlined" onClick={formik.handleSubmit}>Confirm order</Button>
             </form>
         </Paper>
+      
+      </>
   );
 }

@@ -9,7 +9,7 @@ export const Home = () => {
     return(
         <>
             <Template component={
-                <div style={{marginTop:'20px'}}>
+                <div>
                     <CarouselViewer items={['https://www.antiquesandfinefurniture.com/images_stock/13448__L1.jpg', 'https://www.antiquesandfinefurniture.com/images_stock/13448__L1.jpg']} />
                     <h3>Recently added</h3>
                     <ProductArray products={[

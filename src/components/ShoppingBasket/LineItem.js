@@ -10,7 +10,7 @@ import { deleteFromCart } from "../../storage/basketSlice";
 
 export const LineItem = ({productData, remove}) => {
     const dispatch = useDispatch();
-    console.log(productData);
+    
     return(
         <Grid container justifyContent="space-around" alignItems="center" spacing={2}>
             <Grid item>

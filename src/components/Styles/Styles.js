@@ -5,9 +5,10 @@ export const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     appBar: {
-      backgroundColor:"#e7e7e7",
       position: 'absolute',
       top: 0,
+      left: 0,
+      backgroundColor:"#e7e7e7",
     },
   
     title: {
@@ -29,9 +30,7 @@ export const useStyles = makeStyles((theme) => ({
         fontWeight: 300,
     },
 
-    pageContent: {
-      marginTop: "60px",
-    },
+    
     
   }));
 

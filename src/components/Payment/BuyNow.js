@@ -15,12 +15,11 @@ export const BuyNow = ({productData}) => {
             <Redirect to="/" />
         );
     }
-  
 
     return(
         <Template component={
 
-            <div style={{marginTop:"80px"}}>
+            <div>
                 <LineItem productData={buyNowItem} remove={false} />
                 <CheckoutForm buyNow={true}/>
             </div>

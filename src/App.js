@@ -14,6 +14,11 @@ import {BuyNow} from "./components/Payment/BuyNow";
 import {Loading} from "./components/Loading/Loading";
 import {ProductPage} from "./components/Product/ProductPage";
 
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js"
+
+const stripePromise = loadStripe("pk_test_51JPmphCtX7dC5Py8jrseqN21xhYQA6NSkXvaGwSJLu9hm9OE5C1d0yKudXPD2QaUZzcxn2EhRQktbJC7lPeXD8ZS00LYeEdIyG");
+
 
 function App() {
  
@@ -24,10 +29,18 @@ function App() {
         <Route path="/product/:sku" component={ProductPage} />
         <Route path="/catalogue/:category/:subCategory?" component={CategoryView} />
         <Route path='/checkout' component={Checkout}/>         
-        <Route exact path="/payment" component={Payment}/>
+        <Route exact path="/payment">
+          <Elements stripe={stripePromise}>
+            <Payment />
+          </Elements>
+        </Route>
         <Route path="/payment/success" component={PaymentSuccess} />
         <Route path="/payment/failure" component={PaymentFailure} />
-        <Route path="/buy-now" component={BuyNow} />
+        <Route exact path="/buy-now">
+          <Elements stripe={stripePromise}>
+            <BuyNow />
+          </Elements>
+        </Route>
         <Route path="/loading" component={Loading} />
       </Switch>
     </Router>

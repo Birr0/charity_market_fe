@@ -10,11 +10,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: 'black',
-    position: 'fixed',
+    position: 'absolute',
     left: 0,
     bottom: 0,
     zIndex:10,
-    marginTop:"100px",
+    
   },
   icons: {
       color: 'white',

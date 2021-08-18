@@ -16,7 +16,7 @@ export const Payment = () => {
     
     return(
         <Template component={
-            <div style={{marginTop: "80px"}}>
+            <div>
                 <h1>Complete Payment</h1>
                 
                 {checkout.cart.lineItems.map((item, key) => {

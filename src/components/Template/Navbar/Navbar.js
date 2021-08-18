@@ -28,11 +28,10 @@ export default function Navbar() {
 
 
   return(
-    <>
-    {catalogueDialogOpen ? <><CatalogueDialog open={catalogueDialogOpen}/></> : null}
-    {searchDialogOpen ? <><SearchDialog /></> : null}
     
     <div className={classes.root}>
+      {catalogueDialogOpen ? <><CatalogueDialog open={catalogueDialogOpen}/></> : null}
+    {searchDialogOpen ? <><SearchDialog /></> : null}
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>    
             <Tooltip title="Home">
@@ -75,6 +74,6 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
     </div>
-    </>
+    
   );
 }
