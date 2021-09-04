@@ -10,6 +10,23 @@ export const useStyles = makeStyles((theme) => ({
       left: 0,
       backgroundColor:"#e7e7e7",
     },
+
+    managementBar: {
+      backgroundColor:"#000000",
+      display: "flex",
+      justifyContent: "space-around",
+      marginBottom: "10px",
+    },
+
+    managementOption: {
+      fontColor: "#ffffff",
+      color: "#ffffff",
+    },
+
+
+    link: {
+      'textDecoration': 'none'
+    },
   
     title: {
       flexGrow: 1,

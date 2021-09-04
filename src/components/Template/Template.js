@@ -15,7 +15,6 @@ export const Template = ({component}) => {
             
                 <div style={{paddingTop:"60px"}}>
                     {component}
-                    <p>{JSON.stringify(loading)}</p> 
                 </div>
             
             <Footer />
