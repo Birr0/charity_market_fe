@@ -22,7 +22,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Card from "@material-ui/core/Card";
 import Skeleton from '@material-ui/lab/Skeleton';
 
-export const AddProduct = ({productData, update, loading}) => {
+export const ProductForm = ({productData, update, loading}) => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -143,9 +143,10 @@ export const AddProduct = ({productData, update, loading}) => {
         <>
         
         <Card style={{ maxWidth:"1000px",marginLeft:'auto',marginRight:'auto'}} >
-        <Sluicebox />
-        {success ? <><SuccessAlert message={message} /></> : ""}
+        
+        {success ? <SuccessAlert message={message} /> : ""}
         {error ? <ErrorAlert message={message} /> : ""}
+        {!update ? <Sluicebox /> : null}
         <form onSubmit={formik.handleSubmit}>
         
         {update ? <Button type="button" onClick={handleProductDelete}><DeleteIcon color='primary' /></Button> : null}

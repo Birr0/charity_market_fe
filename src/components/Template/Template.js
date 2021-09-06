@@ -5,6 +5,8 @@ import Navbar from "./Footer/Footer";
 import Footer from "./Navbar/Navbar"
 import {Loading} from "../Loading/Loading";
 
+//component div needs theme padding?
+
 export const Template = ({component}) => {
     //const loading = true;//useSelector(state => state.loading.loadingState);
     const loading = useSelector(state => state.loading.loadingState);
@@ -13,7 +15,8 @@ export const Template = ({component}) => {
         <div style={{position:'relative', minHeight:"100vh"}}>
             <Navbar />    
             
-                <div style={{paddingTop:"60px"}}>
+                <div style={{paddingTop:"60px", paddingBottom:"60px"}}> 
+
                     {component}
                 </div>
             

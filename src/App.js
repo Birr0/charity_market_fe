@@ -18,7 +18,8 @@ import { ManageProducts } from "./components/Management/Product/ManageProducts";
 import { ManageOrders } from "./components/Management/Order/ManageOrders.js";
 import { ManageCommunications } from "./components/Management/Communications/ManageCommunications";
 import { ManageBusiness } from "./components/Management/Business/ManageBusiness.js";
-
+import { ManageBatches } from "./components/Management/Batches/ManageBatches";
+import { ManageCategories } from "./components/Management/Categories/ManageCategories";
 
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js"
@@ -47,10 +48,12 @@ function App() {
           </Elements>
         </Route>
         <Route path="/manage/products" component={ManageProducts} />
+        <Route path="/manage/batches" component={ManageBatches} />
+        
         <Route path="/manage/orders" component={ManageOrders} />
         <Route path="/manage/communications" component={ManageCommunications} />
         <Route path="/manage/business" component={ManageBusiness} />
-        
+        <Route path="/manage/categories" component={ManageCategories} />
         <Route path="/loading" component={Loading} />
       </Switch>
     </Router>

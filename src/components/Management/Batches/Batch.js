@@ -1,17 +1,23 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
-import {Get, Delete} from "../../../../api/fetchWrapper";
-import {apiURL} from "../../../../api/apiURL";
-import {handleBarcodeRequest} from "../../Applications/BarcodeGenerator"
-import {Loading} from "../../../Loading/Loading"
-
-import SpreadsheetGenerator from "../../Applications/SpreadsheetGenerator"
+import {Get, Delete} from "../../../api/fetchWrapper";
+import {apiURL} from "../../../api/apiURL";
+import {handleBarcodeRequest} from "../Applications/BarcodeGenerator"
+import {Loading} from "../../Loading/Loading"
+import {ProductArray} from "../../Product/ProductArray.js"
+import SpreadsheetGenerator from "../Applications/SpreadsheetGenerator"
 //import {getBatchNumber} from "./getBatchNumber"
-import SuccessAlert from "../../Alerts/SuccessAlert";
-import ErrorAlert from "../../Alerts/ErrorAlert"
+import SuccessAlert from "../Alerts/SuccessAlert";
+import ErrorAlert from "../Alerts/ErrorAlert"
+import ViewComfyIcon from '@material-ui/icons/ViewComfy';
+import ListIcon from "@material-ui/icons/List";
+import { IconButton } from "@material-ui/core";
 
 export const Batch = ({providedBatchNumber, batchData}) => {
+    
+    console.log(batchData);
+
     let {batchNumber} = useParams();
     
     if(providedBatchNumber){
@@ -19,20 +25,22 @@ export const Batch = ({providedBatchNumber, batchData}) => {
     }
 
     const [batch, setBatch] = useState();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    
-    useEffect(() => {
-        setLoading(true);
+    const [gridView, setGridView] = useState(false);
 
-        if (!batchData){
+    useEffect(() => {
+        setLoading(false);
+        //setLoading(true);
+
+        //if (!batchData){
             
-            Get(`/inventory/batches/${batchNumber}`).then(response => {
-                setBatch(response.batch);
-                setLoading(false);
-            })
-        }
+        //    Get(`/inventory/batches/${batchNumber}`).then(response => {
+        //        setBatch(response.batch);
+        //        setLoading(false);
+        //    })
+        //}
         //else{
         //    
         //    batchNumber = getBatchNumber(batchData['Product Code/SKU *'])
@@ -43,14 +51,14 @@ export const Batch = ({providedBatchNumber, batchData}) => {
     
     },[batchData])
 
-    const handleCSVRequest = (e) => {
+    const handleSpreadsheetRequest = (e, extension) => {
         e.preventDefault();
-        if(!batch){
+        if(!batchData){
             return(
                 alert('No Data in Batch')
             )
         }
-        let skuList = batch.map((product) => {
+        let skuList = batchData.map((product) => {
             return(
                 Object.keys(product)[0]
             )
@@ -65,15 +73,20 @@ export const Batch = ({providedBatchNumber, batchData}) => {
             )
         })
         
-        Get("/inventory/products?" + params.toString())
-            .then((response) => {
-                console.log(response);
-                SpreadsheetGenerator(`batch${batchNumber}`,Object.keys(response.products).map((key) => {
-                    return(
-                    response.products[key]
-                    )
-                }), 'csv')
-            })
+        if(extension === 'csv' || extension === 'xlsx'){
+            Get("/inventory/products?" + params.toString())
+                .then((response) => {
+                    console.log(response);
+                    SpreadsheetGenerator(`batch${batchNumber}`,Object.keys(response.products).map((key) => {
+                        return(
+                        response.products[key]
+                        )
+                    }), extension)
+                })
+        }
+        else{
+            return // probably excessive checking
+        }
     }
     
     const deleteBatch = () => {
@@ -122,15 +135,26 @@ export const Batch = ({providedBatchNumber, batchData}) => {
                     {error ? <ErrorAlert message={`Could not delete Batch ${batchNumber}`} /> : null}
 
                     <h1>Batch: {batchNumber}</h1>
+                        <IconButton onClick={(e) => {
+                            e.preventDefault();
+                            setGridView(!gridView);
+                        }}>
+                                {!gridView ? 
+                                <ViewComfyIcon />
+                                    : 
+                                <ListIcon />
+                                }
+                        </IconButton>
                         <button onClick={(e) => {
                             e.preventDefault();
                             handleBarcodeRequest(batchNumber);
                         }}>Get barcode</button>
-                        <button onClick={(e) => {handleCSVRequest(e)}}>Export CSV</button>
-                        <button onClick={(e) => {handleCSVRequest(e)}}>Export Spreadsheet</button>
+                        <button onClick={(e) => {handleSpreadsheetRequest(e, 'csv')}}>Export CSV</button>
+                        <button onClick={(e) => {handleSpreadsheetRequest(e, 'xlsx')}}>Export XLSX</button>
                         
                         <button onClick={deleteBatch}>Delete Batch</button>
-                        {batch ? batch.map((product) => {
+                        <p>Add table view. Get products photos etc.. Make ech product in table be editable or on grid view click product for dialog with product form...</p>
+                        {batchData && !gridView ? batchData.map((product) => {
                             if (!Object.entries(product)[0]){
                                 return
                             }
@@ -144,6 +168,9 @@ export const Batch = ({providedBatchNumber, batchData}) => {
                                 )
                         })
                       : ""}
+                      
+                      
+                        {batchData && gridView ? <ProductArray products={batchData} /> : null}
                     </div>
                 </>
             }

@@ -24,11 +24,13 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer() {
   const classes = useStyles();
   return (
-    <BottomNavigation className={classes.root}>
-      <BottomNavigationAction style={{color: 'white'}} label="test@test.com " icon={<ContactSupportIcon className={classes.icons} />} />
-      <BottomNavigationAction  icon={<InstagramIcon className={classes.icons} />} />
-      <BottomNavigationAction  icon={<FacebookIcon className={classes.icons} />} />
-        <p style={{color: 'white'}}>© Rogers' Antiques 2021</p>
-    </BottomNavigation>
+    
+      <BottomNavigation className={classes.root} >
+        <BottomNavigationAction style={{color: 'white'}} label="test@test.com " icon={<ContactSupportIcon className={classes.icons} />} />
+        <BottomNavigationAction  icon={<InstagramIcon className={classes.icons} />} />
+        <BottomNavigationAction  icon={<FacebookIcon className={classes.icons} />} />
+          <p style={{color: 'white'}}>© Rogers' Antiques 2021</p>
+      </BottomNavigation>
+    
   );
 }
