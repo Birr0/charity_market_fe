@@ -53,7 +53,9 @@ function App() {
         <Route path="/manage/orders" component={ManageOrders} />
         <Route path="/manage/communications" component={ManageCommunications} />
         <Route path="/manage/business" component={ManageBusiness} />
-        <Route path="/manage/categories" component={ManageCategories} />
+        <Route exact path="/manage/categories" component={ManageCategories} />
+        <Route path="/manage/categories/:category_id" component={ManageCategories} /> 
+
         <Route path="/loading" component={Loading} />
       </Switch>
     </Router>

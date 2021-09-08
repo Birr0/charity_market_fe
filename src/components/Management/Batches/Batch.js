@@ -13,10 +13,11 @@ import ErrorAlert from "../Alerts/ErrorAlert"
 import ViewComfyIcon from '@material-ui/icons/ViewComfy';
 import ListIcon from "@material-ui/icons/List";
 import { IconButton } from "@material-ui/core";
+import { BatchTableRow } from "./BatchTableRow";
 
 export const Batch = ({providedBatchNumber, batchData}) => {
     
-    console.log(batchData);
+    //console.log(batchData);
 
     let {batchNumber} = useParams();
     
@@ -24,14 +25,16 @@ export const Batch = ({providedBatchNumber, batchData}) => {
         batchNumber = providedBatchNumber;
     }
 
-    const [batch, setBatch] = useState();
+    const [batch, setBatch] = useState(batchData);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [gridView, setGridView] = useState(false);
 
     useEffect(() => {
+        //setBatch(batchData);
         setLoading(false);
+        
         //setLoading(true);
 
         //if (!batchData){
@@ -124,57 +127,73 @@ export const Batch = ({providedBatchNumber, batchData}) => {
         
 
         })
+
+       
     }
-
+    const handleSearch = async (e) => {
+       
+        setBatch(batchData.filter(product => 
+            //Object.entries(product)[0][1].title.toLower.includes(e.target.value.toLower)
+            Object.entries(product)[0] ? Object.entries(product)[0][1].title.toLowerCase().includes(e.target.value.toLowerCase()) : false
+        ));
+       
+        //setLoading(false);
+    }
     return(
-        <>
-            {loading ? <Loading /> : 
-                <>
-                    <div>
-                    {success ? <SuccessAlert message={`Deleted Batch ${batchNumber}`} /> : null}
-                    {error ? <ErrorAlert message={`Could not delete Batch ${batchNumber}`} /> : null}
+        <div>
+            {success ? <SuccessAlert message={`Deleted Batch ${batchNumber}`} /> : null}
+            {error ? <ErrorAlert message={`Could not delete Batch ${batchNumber}`} /> : null}
 
-                    <h1>Batch: {batchNumber}</h1>
-                        <IconButton onClick={(e) => {
-                            e.preventDefault();
-                            setGridView(!gridView);
-                        }}>
-                                {!gridView ? 
-                                <ViewComfyIcon />
-                                    : 
-                                <ListIcon />
-                                }
-                        </IconButton>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            handleBarcodeRequest(batchNumber);
-                        }}>Get barcode</button>
-                        <button onClick={(e) => {handleSpreadsheetRequest(e, 'csv')}}>Export CSV</button>
-                        <button onClick={(e) => {handleSpreadsheetRequest(e, 'xlsx')}}>Export XLSX</button>
-                        
-                        <button onClick={deleteBatch}>Delete Batch</button>
-                        <p>Add table view. Get products photos etc.. Make ech product in table be editable or on grid view click product for dialog with product form...</p>
-                        {batchData && !gridView ? batchData.map((product) => {
-                            if (!Object.entries(product)[0]){
-                                return
-                            }
-                            
-                            const sku = Object.keys(product)
-                            const {title, barcode} = Object.entries(product)[0][1];
+            <h1>Batch: {batchNumber}</h1>
+                <IconButton onClick={(e) => {
+                    e.preventDefault();
+                    setGridView(!gridView);
+                }}>
+                        {!gridView ? 
+                        <ViewComfyIcon />
+                            : 
+                        <ListIcon />
+                        }
+                </IconButton>
+                <button onClick={(e) => {
+                    e.preventDefault();
+                    handleBarcodeRequest(batchNumber);
+                }}>Get barcode</button>
+                <button onClick={(e) => {
+                    console.log(e);
+                    handleSpreadsheetRequest(e, 'csv')}}>Export CSV</button>
+                <button onClick={(e) => {handleSpreadsheetRequest(e, 'xlsx')}}>Export XLSX</button>
+                
+                <button onClick={deleteBatch}>Delete Batch</button>
+                <p>Add table view. Get products photos etc.. Make each product in table be editable or on grid view click product for dialog with product form... </p>
+                <p>Add search batch table</p>
+                
+                {batchData && gridView ? <ProductArray products={batchData} /> : null}
+                {batch && !gridView ? 
+                    loading ? <Loading /> :
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>SKU : add SKU search</th>
+                            <th>Title : <input onChange={(e) => {
+                                e.preventDefault();
+                                setLoading(true);
+                                handleSearch(e).then(setLoading(false))}} type="text" />
+                            </th>
+                            <th>Barcode</th>
+                            <th></th>
+                            <th></th>
+
+                        </tr>
+                        {batch ? batch.map((product) => {
                             return(
-                                <div key={sku}>
-                                    <Link to={`/inventory/products/${sku}`} >{Object.keys(product)} , {title} , {barcode}</Link>
-                                </div>
-                                )
-                        })
-                      : ""}
-                      
-                      
-                        {batchData && gridView ? <ProductArray products={batchData} /> : null}
-                    </div>
-                </>
-            }
-            
-        </>
+                                <BatchTableRow product={product} />
+                            )
+                        }) : null}
+                    </table>
+                    : null}
+            </div>
+                
     )
 }

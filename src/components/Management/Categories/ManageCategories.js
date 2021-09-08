@@ -1,15 +1,21 @@
 import {ManagementTemplate} from "../ManagementTemplate/ManagementTemplate.js";
+import {CategoryForm} from "./CategoryForm";
+import {CategoryCard} from "./CategoryCard";
+
 import Typography from "@material-ui/core/Typography";
 
 export const ManageCategories = () => {
     return(
-        <>
-            
-            <Typography variant="h3">Categories</Typography>
-            <li>Search categories</li>
-            <li>Create category</li>
-            <li>Update category</li>
-            <li>Delete category</li>
-        </>
+        <ManagementTemplate component={
+            <>
+                <Typography variant="h3">Categories</Typography>
+                <p>Add category</p>
+                <CategoryForm />
+                <CategoryCard />
+                <li>Search categories</li>
+                <p>List and Grid views of categories</p>
+                
+            </>
+        } />
     )
 }

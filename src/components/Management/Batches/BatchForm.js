@@ -19,6 +19,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Card from "@material-ui/core/Card";
 import Skeleton from '@material-ui/lab/Skeleton';
 
+import {batchSchema} from "./batchSchema";
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 export const BatchForm = ({productData, update, loading}) => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState(false);
@@ -29,80 +36,16 @@ export const BatchForm = ({productData, update, loading}) => {
   
   const formik = useFormik({ 
     initialValues: { 
-      //take initialValues from backend ... productSchema from schema/product.py
-      sku: productData ? productData['Product Code/SKU *'] : '',
-      title: productData ? productData['Product Name *'] : '',
-      price: productData ? productData['Selling Price *'] : '',
-      description: productData ? productData['Product Description'] : 'test',
-      category: productData ? productData['Category *']: '',
-      image_url: productData ? productData['Image URL'] : '',        
-      batch_number: 0,//productData ? getBatchNumber(productData['Product Code/SKU *']) : 0,
-      quantity: productData ? parseInt(productData['Current Stock Level']) : 1,
-      barcode: productData ? productData['Barcode'] : '',
+      batch_identifier: '',
+      nickname: '',
+      description: '',
+      location: 'Store #1',
     },
 
-    //validationSchema:  productSchema, //take initialValues from backend ... productSchema from schema/product.py
+    validationSchema:  batchSchema, //take initialValues from backend ... productSchema from schema/product.py
 
     onSubmit: values => {
-
-      !update ? Post("/inventory/products", JSON.stringify(values)).then(response => {
-        if(response.status_code === 200){
-          setSKU(response.sku);
-          if(file){
-          
-            var data = new FormData()
-            data.append('file', file)
-            
-            Post(`/images/product-images/${response.sku}`, data).then(response => {
-              values.image_url = response.image_url;
-              console.log(response, values);
-              
-              console.log(response, values);
-              Put(`/inventory/products/${response.sku}`, JSON.stringify(values)).then(response => {
-                setSuccess(true);
-                setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-              })
-            })
-          }
-          else{
-            setSuccess(true);
-            setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-          }
-
-        }
-        else{
-          setError(true);
-        }
-      }) : Put(`/inventory/products/${formik.values.sku}`, JSON.stringify(values)).then(response => {
-            if(response.status_code === 204){
-              
-              if(file){
-              
-                var data = new FormData()
-                data.append('file', file)
-                
-                Post(`/images/product-images/${response.sku}`, data).then(response => {
-                  values.image_url = response.image_url;
-           
-                  Put(`/inventory/products/${response.sku}`, JSON.stringify(values)).then(response => {
-                    setSuccess(true);
-                    setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-                  })
-                })
-              }
-            
-            else{
-              setSuccess(true);
-              setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-            }
-            
-          }
-          else{
-            setError(true);
-            setMessage(update ? `${formik.values.title} : ${formik.values.sku} - error in updating inventory` : `${formik.values.title} : ${sku} - error in uploading to inventory`);
-          }
-
-      })
+      return
     }
       
   });
@@ -132,9 +75,7 @@ export const BatchForm = ({productData, update, loading}) => {
           setDisabled(!disabled);
       }
 
-      const handleProductDelete = () => {
-        Delete(`/inventory/products/${formik.values.sku}`);
-      }
+      
 
       return(
         <>
@@ -146,7 +87,7 @@ export const BatchForm = ({productData, update, loading}) => {
         
         <form onSubmit={formik.handleSubmit}>
         
-        {update ? <Button type="button" onClick={handleProductDelete}><DeleteIcon color='primary' /></Button> : null}
+        {update ? <Button type="button"><DeleteIcon color='primary' /></Button> : null}
         
         <Tooltip title="Edit">
           <Button type="button" id="disabled" name="disabled" onClick={(e) => setEdit(e)} style={{border:"none", backgroundColor:"none"}}><EditIcon color="primary" /></Button>
@@ -158,24 +99,44 @@ export const BatchForm = ({productData, update, loading}) => {
             >
             
             <Grid item>
-            <br></br>
-
-            <p>** Iterate over productSchema to get form ...</p>
-            <label>Name: </label>
+            <label>Batch identifier: </label>
           
           
           <br></br>
           {!loading ?
           <Input
-            id="_name"
+            id="batch_identifier"
 
-            name="_name"
+            name="batch_identifier"
 
             type="text"
 
             onChange={formik.handleChange}
 
-            value={formik.values.title}
+            value={formik.values.batch_identifier}
+            
+            disabled={disabled}  
+
+          />
+          : <Skeleton variant="text" />}
+          {formik.errors.title ? <div style={{fontColor:"red"}}>*{formik.errors.batch_identifer}</div> : null}
+            
+            <br></br>
+            
+            <InputLabel>Nickname: </InputLabel>
+          
+          <br></br>
+          {!loading ?
+          <Input
+            id="nickname"
+
+            name="nickname"
+
+            type="text"
+
+            onChange={formik.handleChange}
+
+            value={formik.values.nickname}
             
             disabled={disabled}  
 
@@ -185,23 +146,7 @@ export const BatchForm = ({productData, update, loading}) => {
         <br></br>
         
       <br></br>
-      <label>Batch identifier: //format price with preferred currency</label>
-      <br></br>
-          <Input
-
-          id="batch_identifier"
-
-          name="batch_identifier"
-
-          type="text"
-
-          onChange={formik.handleChange}
-
-          value={formik.values.price}
-
-          disabled={disabled}
-          />
-          {formik.errors.price ? <div style={{fontColor:"red"}}>*{formik.errors.price}</div> : null}
+      
     <br></br>
     <br></br>
     <label>Description: </label>
@@ -227,19 +172,30 @@ export const BatchForm = ({productData, update, loading}) => {
         <br></br>
         <br></br>
           Add dropdown for locations ...
+          <Select
+          id="location"
+          name="location"
+          value={formik.values.location}
+          style={{width:"200px"}}
+          onChange={formik.handleChange}
+          //input={<BootstrapInput />}
+          >
+          <MenuItem value={'Store #1'}>Store 1</MenuItem>
+          <MenuItem value={'Store #2'}>Store 2</MenuItem>
+          <MenuItem value={'Store #3'}>Store 3</MenuItem>
+        </Select>
         <br></br>
-          
-         
-      
        
-            <br></br>
           {update ? <><button type="submit" disabled={disabled}>Update</button><button onClick={(e) => {
             e.preventDefault();
             handleBarcodeRequest(formik.values.sku, formik.values.price);
             }}>Get Barcode</button></> :<button type="submit" disabled={disabled}>Upload</button>}
               
-              <label>Add product file</label>
-              <Input
+              
+            </Grid>
+            <Grid item>
+            <InputLabel>Add product file</InputLabel>
+              <input
               type="file"
               accept=".csv, .xlsx"
               multiple
