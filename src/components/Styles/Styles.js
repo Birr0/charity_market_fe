@@ -23,6 +23,9 @@ export const useStyles = makeStyles((theme) => ({
       color: "#ffffff",
     },
 
+    body: {
+      marginBottom: theme.spacing(1),
+    },
 
     link: {
       'textDecoration': 'none'

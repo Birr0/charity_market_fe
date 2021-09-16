@@ -1,6 +1,5 @@
 import {ManagementTemplate} from "../ManagementTemplate/ManagementTemplate";
-import {ProductForm} from "./ProductForm";
-import {Batches} from "../Batches/Batches.js";
+import SluiceboxResponse from "./Sluicebox/SluiceResponse.js";
 import {SearchProducts} from "./SearchProducts";
 //import { useSelector, useDispatch } from "react-redux";
 import {useState} from "react";
@@ -11,8 +10,7 @@ import {useStyles} from "../../Styles/Styles.js";
 
 export const ManageProducts = () => {
     const [addProduct, openAddProduct] = useState(false);
-    const [batchOpen, setBatchOpen] = useState(false);
-
+   
     const classes = useStyles();
    
     return(
@@ -24,10 +22,13 @@ export const ManageProducts = () => {
                     
                     <SearchProducts />
                 </div>
+                <Typography  variant="h5">Add product by spreadsheet <input type="file" accept=".csv, .xlsx" multiple /></Typography>
+
                 <Typography variant="h5">Add product 
 
                     <IconButton onClick={
                         (e) => {
+                            console.log('hello')
                             e.preventDefault();
                             console.log(!addProduct);
                             openAddProduct(!addProduct);
@@ -38,11 +39,13 @@ export const ManageProducts = () => {
                 
                 </Typography>
 
+                { addProduct ?
+                    <div>
+                        <SluiceboxResponse /> 
+                    </div>    
+                    : null}
                 
-                {addProduct ? <ProductForm update={false} /> : null}   
                 
-                <Typography variant="h5">Add product by spreadsheet <input type="file" accept=".csv, .xlsx" multiple /></Typography>
-
                 
                
             </div> 

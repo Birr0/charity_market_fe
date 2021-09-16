@@ -9,12 +9,14 @@ import {Sluicebox} from "./Sluicebox/Sluicebox.js";
 import { ProductForm } from "./ProductForm";
 
 const ProductSearch = ({products}) => {
-      return (
+    console.log(products);
+    return (
         
         <Formik
             initialValues={{product: ''}}
             onSubmit={(values, actions) => {
                 alert(JSON.stringify(values));
+                
                 if(values.product){
                     //setProduct(values.product);
                     console.log(values.product);
@@ -36,12 +38,8 @@ const ProductSearch = ({products}) => {
                     onChange={(event, value) => setFieldValue('product', value)}
                     //onChange={(event, value) => console.log(value)}
                     
-                    options={Object.keys(products).map((sku) => {
-                        return(
-                            products[sku]
-                        )
-                    })}
-                    getOptionLabel={(option) => option['Product Name *'] + ` - ${option['Product Code/SKU *']}` } 
+                    options={products}
+                    getOptionLabel={(option) => JSON.stringify(option) } 
                         
                     renderInput={(params) => (
                     <>
@@ -79,8 +77,9 @@ export const SearchProducts = () => {
     const [openForm, setOpenForm] = useState(false);
     
     useEffect(() => {
-        Get('/inventory/products').then(response => {
-            setProducts(response.products);
+        Get('/products/stored-products').then(response => {
+            
+            setProducts(response);
             setLoading(false);
         })
     }, [])

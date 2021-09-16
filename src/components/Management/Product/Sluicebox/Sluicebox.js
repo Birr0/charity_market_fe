@@ -1,28 +1,37 @@
-import { useState, useEffect } from "react";
-// add formik in here
+import { useState } from "react";
+import {useFormik} from "formik";
 import SearchResults from "./CatalogSearch";
 import SluiceResponse from "./SluiceResponse";
 import SearchIcon from "@material-ui/icons/Search";
 import Card from "@material-ui/core/Card";
 import { BarcodeParser, BarcodeError } from "../../Applications/BarcodeParser.js";
+import { ProductForm } from "../ProductForm.js";
 
 export const Sluicebox = ({update}) => {
-  const [query, setQuery] = useState();
-  const [textQuery, setTextQuery] = useState();
+  const [barcodeQuery, setBarcodeQuery] = useState(false);
+  const [textQuery, setTextQuery] = useState(false);
   const [queryError, setQueryError] = useState(false);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (BarcodeParser(String(e.searchQuery))) {
-      setQueryError(false);
-      setQuery(e);
-      setTextQuery();
-    } else {
-      setQuery();
-      setTextQuery(e);
+  const formik = useFormik({
+    initialValues: {
+      query: null
+    },
+    onSubmit: values => {
+      //e.preventDefault();
+      if (BarcodeParser(String(values.query))) {
+        setQueryError(false);
+        setBarcodeQuery(true);
+        setTextQuery(false);
+      } else {
+        setBarcodeQuery(false);
+        setTextQuery(true);
+      }
+      document.getElementById("search").reset();
     }
-    document.getElementById("search").reset();
-  };
+    })
+
+  //const onSubmit = (e) => {
+    
 
   return (
     <div>
@@ -32,11 +41,13 @@ export const Sluicebox = ({update}) => {
           <form
             name="search"
             id="search"
-            onSubmit={onSubmit}
+            onSubmit={formik.handleSubmit}
             style={{ maxWidth:"1000px",marginLeft:'auto',marginRight:'auto'}}
           >
             <input
-              name="searchQuery"
+              id="query"
+              name="query"
+              onChange={formik.handleChange}
               autoFocus
               //onBlur={({ target }) => target.focus()}
               //ref={register({ required: true })}
@@ -47,12 +58,13 @@ export const Sluicebox = ({update}) => {
               />
             </button>
           </form>
+        
         </div>
-        {query ? (
-          <SluiceResponse query={query.searchQuery} update={update} />
+        {barcodeQuery ? (
+          <SluiceResponse query={formik.values.query} update={update} />
         ) : textQuery ? (
-          <SearchResults query={textQuery} />
-        ) : null
+          <SearchResults query={formik.values.query} />
+        ) : null}
         }
         <Card
           style={{
@@ -62,7 +74,7 @@ export const Sluicebox = ({update}) => {
            
           }}
         >
-          {queryError ? <BarcodeError /> : ""}
+          {queryError ? <BarcodeError /> : null}
           
         </Card>
       </div>

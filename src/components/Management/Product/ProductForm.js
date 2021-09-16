@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {useFormik} from "formik";
+import {useFormik, Formik, FastField} from "formik";
 import {Redirect} from "react-router-dom";
 
 import {Post, Put, Delete, Get} from "../../../api/fetchWrapper";
@@ -29,54 +29,60 @@ export const ProductForm = ({productData, update, loading}) => {
   const [message, setMessage] = useState();
   const [sku, setSKU] = useState();
   
+  console.log(productData);
   
   const formik = useFormik({ 
     initialValues: { 
       //take initialValues from backend ... productSchema from schema/product.py
-      sku: productData ? productData['Product Code/SKU *'] : '',
-      title: productData ? productData['Product Name *'] : '',
-      price: productData ? productData['Selling Price *'] : '',
-      description: productData ? productData['Product Description'] : 'test',
-      category: productData ? productData['Category *']: '',
-      image_url: productData ? productData['Image URL'] : '',        
-      batch_number: 0,//productData ? getBatchNumber(productData['Product Code/SKU *']) : 0,
-      quantity: productData ? parseInt(productData['Current Stock Level']) : 1,
-      barcode: productData ? productData['Barcode'] : '',
+      sku: productData ? productData['sku'] : '',
+      title: productData ? productData['title'] : '',
+      sub_title: productData ? productData['sub_title'] : '',
+      price: productData ? productData['price'] : null,
+      currency: productData ? productData['currency'] : 'GBP',
+      description: productData ? productData.description : '',
+      category: productData ? productData['category_id']: '',
+      image_url: productData ? productData['image_url'] : '',        
+      batch_identifier: 0,//productData ? getBatchNumber(productData['Product Code/SKU *']) : 0,
+      quantity: productData ? parseInt(productData['quantity']) : 0,
+      //barcode: productData ? productData['Barcode'] : '',
     },
 
     validationSchema:  productSchema, //take initialValues from backend ... productSchema from schema/product.py
 
     onSubmit: values => {
-
-      !update ? Post("/inventory/products", JSON.stringify(values)).then(response => {
-        if(response.status_code === 200){
-          setSKU(response.sku);
-          if(file){
+      console.log(values);
+      var payloadArray = [values];
+      console.log(payloadArray);
+      //var payload = payloadArray.push(values);
+      //console.log(payload);
+      !update ? Post("/products/stored-products", JSON.stringify(payloadArray)).then(response => {
+        //if(response.status_code === 200){
+        //  setSKU(response.sku);
+        //  if(file){
           
-            var data = new FormData()
-            data.append('file', file)
+        //    var data = new FormData()
+        //    data.append('file', file)
             
-            Post(`/images/product-images/${response.sku}`, data).then(response => {
-              values.image_url = response.image_url;
-              console.log(response, values);
+        //    Post(`/images/product-images/${response.sku}`, data).then(response => {
+        //      values.image_url = response.image_url;
+        //      console.log(response, values);
               
-              console.log(response, values);
-              Put(`/inventory/products/${response.sku}`, JSON.stringify(values)).then(response => {
-                setSuccess(true);
-                setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-              })
-            })
-          }
-          else{
-            setSuccess(true);
-            setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
-          }
-
-        }
-        else{
-          setError(true);
-        }
-      }) : Put(`/inventory/products/${formik.values.sku}`, JSON.stringify(values)).then(response => {
+        //      console.log(response, values);
+        //      Put(`/inventory/products/${response.sku}`, JSON.stringify(values)).then(response => {
+        //        setSuccess(true);
+        //        setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
+        //      })
+        //    })
+        //  }
+        //  else{
+        //    setSuccess(true);
+        //    setMessage(update ? `${formik.values.title} : ${formik.values.sku} - Updated in inventory` : `${formik.values.title} : ${sku} - uploaded to inventory`);
+        //  }
+          console.log(response);
+          
+        
+        
+      }) : Put(`/products/stored-products/${formik.values.sku}`, JSON.stringify(values)).then(response => {
             if(response.status_code === 204){
               
               if(file){
@@ -146,7 +152,7 @@ export const ProductForm = ({productData, update, loading}) => {
         
         {success ? <SuccessAlert message={message} /> : ""}
         {error ? <ErrorAlert message={message} /> : ""}
-        {!update ? <Sluicebox /> : null}
+        
         <form onSubmit={formik.handleSubmit}>
         
         {update ? <Button type="button" onClick={handleProductDelete}><DeleteIcon color='primary' /></Button> : null}
@@ -178,11 +184,28 @@ export const ProductForm = ({productData, update, loading}) => {
 
             </Grid>
             <Grid item style={{paddingLeft:"5px"}}>
+            <label>SKU: </label>
+            {!loading ? 
+            <Input
+              id="sku"
+
+              name="sku"
+
+              type="text"
+
+              onChange={formik.handleChange}
+
+              value={formik.values.sku}
+              
+              disabled={disabled}  
+            />
+          : <Skeleton variant="text" />}
+          {formik.errors.sku ? <div style={{fontColor:"red"}}>*{formik.errors.sku}</div> : null}
             <br></br>
 
-            <p>** Iterate over productSchema to get form ...</p>
+            
             <label>Title: </label>
-          
+            
           
           <br></br>
           {!loading ?
@@ -203,7 +226,27 @@ export const ProductForm = ({productData, update, loading}) => {
           : <Skeleton variant="text" />}
           {formik.errors.title ? <div style={{fontColor:"red"}}>*{formik.errors.title}</div> : null}
         <br></br>
-        
+        <label>Sub-Title: </label>
+            
+          
+          <br></br>
+          {!loading ?
+          <Input
+            id="sub_title"
+
+            name="sub_title"
+
+            type="text"
+
+            onChange={formik.handleChange}
+
+            value={formik.values.sub_title}
+            
+            disabled={disabled}  
+
+          />
+          : <Skeleton variant="text" />}
+          {formik.errors.subtitle ? <div style={{fontColor:"red"}}>*{formik.errors.subtitle}</div> : null}
       <br></br>
       <label>Price: //format price with preferred currency</label>
       <br></br>

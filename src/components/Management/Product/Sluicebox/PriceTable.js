@@ -40,7 +40,7 @@ export const LongMenu = ({ options, id, title }) => {
         onClose={handleClose}
         PaperProps={{
           style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
+            maxHeight: "100px",
             maxWidth: "35ch",
           },
         }}
@@ -49,7 +49,7 @@ export const LongMenu = ({ options, id, title }) => {
           options.map((option) => (
             <MenuItem key={option.id} onClick={handleClose}>
                 <p>
-                      <strong>{option.value}</strong>
+                      <strong>{option.price}</strong>
                       <small> ({option.condition})</small>
                     </p>
               

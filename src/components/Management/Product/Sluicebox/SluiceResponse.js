@@ -4,10 +4,15 @@ import Card from "@material-ui/core/Card";
 import {Loading} from "../../../Loading/Loading";
 import { LongMenu } from "./PriceTable.js";
 import {Get} from "../../../../api/fetchWrapper";
-import {ProductView} from "../../../Product/ProductView.js"
+//import {ProductView} from "../../../Product/ProductView.js"
+import {ProductForm} from "../ProductForm";
+import {useFormik, Formik, FastField } from "formik";
+import SearchResults from "./CatalogSearch";
+import SearchIcon from "@material-ui/icons/Search";
+import { BarcodeParser, BarcodeError } from "../../Applications/BarcodeParser.js";
 
-function SluiceResponse({ query }) {
-  console.log(query);
+
+function SluiceResponse() {
   
   const [loading, setLoading] = useState(true);
   const [catalogInfo, setCatalogInfo] = useState();
@@ -18,65 +23,116 @@ function SluiceResponse({ query }) {
   const [usedPriceColor, setUsedPriceColor] = useState("");
   const [newPriceColor, setNewPriceColor] = useState("");
 
+  const [query, setQuery] = useState();
 
-  useEffect(() => {
-    setLoading(true);
-    setCatalogInfoError(false);
-    setCatalogInfo();
-    setListingInfo();
-    setDescription();
-    setCategory();
+  const [barcodeQuery, setBarcodeQuery] = useState(false);
+  const [textQuery, setTextQuery] = useState(false);
+  const [queryError, setQueryError] = useState(false);
 
-    Get(`/products/?gtin=${query}`).then(
-      response => {
-        
+  const [response, setResponse] = useState();
 
-        if(response.status_code === 200){
-          setCatalogInfoError(false);
-          setCatalogInfo(response.catalog);
-          console.log(response);
-          setListingInfo(response.browse);
-          response.details.category ? setCategory(response.details.category): setCategory('Recently Added');
-          response.details.catalogResponse.description ? setDescription(response.details.catalogResponse.description) : setDescription('');
-              
-        if (response.used_price > 7.0) {
-            setUsedPriceColor("#61B329");
-          } else {
-            setUsedPriceColor("red");
-          }
-          if (response.new_price > 7.0) {
-            setNewPriceColor("#61B329");
-          } else {
-            setNewPriceColor("red");
-          }
-
-      }
-      else{
-            setCatalogInfo();
-            setListingInfo('');
-            setCatalogInfoError(true);
-            setLoading(false);
-      }
-    }
-    ).then(() => setLoading(false));
-    
-  
-  }, [query]);
 
   return (
-    <>
-        <div style={{maxWidth:"900px", maxHeight:"600px"}}>
+    <div>
+      <Formik
+        initialValues={{ query: '' }}
+
+        onSubmit={(values, actions) => {
+ 
+          if (BarcodeParser(String(values.query))) {
+            setQueryError(false);
+            setBarcodeQuery(true);
+            setTextQuery(false);
+          } else {
+            setBarcodeQuery(false);
+            setTextQuery(true);
+          }
+          setLoading(true);
+          setCatalogInfoError(false);
+          setCatalogInfo();
+          setListingInfo();
+          setDescription();
+          setCategory();
+    
+        Get(`/products/?gtin=${values.query}`).then(
+          response => {
+            console.log(response);        
+            setResponse(response);
+            if(response.status_code === 200){
+              setCatalogInfoError(false);
+              setCatalogInfo(response.catalog);
+              console.log(response);
+              setListingInfo(response.browse);
+              response.details.category ? setCategory(response.details.category): setCategory('Recently Added');
+              response.details.catalogResponse.description ? setDescription(response.details.catalogResponse.description) : setDescription('');
+                  
+            if (response.used_price > 7.0) {
+                setUsedPriceColor("#61B329");
+              } else {
+                setUsedPriceColor("red");
+              }
+              if (response.new_price > 7.0) {
+                setNewPriceColor("#61B329");
+              } else {
+                setNewPriceColor("red");
+              }
+    
+          }
+          else{
+                setCatalogInfo();
+                setListingInfo('');
+                setCatalogInfoError(true);
+                setLoading(false);
+          }
+        }
+        ).then(() => setLoading(false));
+          document.getElementById("query").reset();
+ 
+        }}
+        >
+
+   {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+
+     <form onSubmit={handleSubmit}>
+
+       <FastField
+
+         type="text"
+
+         //onChange={handleChange}
+
+         onBlur={handleChange}
+
+         value={values.query}
+
+         name="query"
+
+         id="query"
+
+       />
+
+       
+
+       <button type="submit">Submit</button>
+
+     </form>
+
+   )}
+
+ </Formik>
+    
+        <div style={{margin: "30px",maxWidth:"900px", maxHeight:"600px"}}>
           
           {catalogInfoError ? (
             <p>Cant find product</p>
           ) : (
             ""
           )}
+
           {catalogInfo && listingInfo ?
-            <ProductView update={false} loading={loading} productData={catalogInfo ? {'Product Name *': catalogInfo.summaryResponse.productSummaries[0].title, 'Selling Price *': listingInfo.used_price, 'Image URL': catalogInfo.summaryResponse.productSummaries[0].image ? catalogInfo.summaryResponse.productSummaries[0].image.imageUrl: "", 'Category *': category, 'Product Description': description , 'Current Stock Level': 1 , 'batch_number': 0, 'Product Code/SKU *': '', 'Barcode': ''} : null} />
-          : !catalogInfoError ? <><Loading /><p>Searching for {query}</p></> : null }
-              <br></br>
-              <br></br>
+            <ProductForm update={false} loading={loading} productData={catalogInfo ? {'title': catalogInfo.summaryResponse.productSummaries[0].title, 'price': listingInfo.used_price, 'image_url': catalogInfo.summaryResponse.productSummaries[0].image ? catalogInfo.summaryResponse.productSummaries[0].image.imageUrl: "", 'category': category, 'description': response.details.catalogResponse.description , 'quantity': 1 , 'batch_identifier': null, 'sku': ''} : null} />
+          : !catalogInfoError ? <><Loading /><p>Searching</p></> : null }
+
               {listingInfo && catalogInfo ? 
               <Card>
                 <Grid container spacing={2} justify="space-evenly">
@@ -118,11 +174,11 @@ function SluiceResponse({ query }) {
 
                 </Grid>
               </Card>
-              : null}
+              : <ProductForm update={false} />}
             
         </div>
       
-    </>
+    </div>
   );
 }
 
