@@ -11,7 +11,6 @@ export const managementSlice = createSlice({
         createSluiceboxQuery: (state, action) => {
             state.query = action.payload.query;
             localStorage.setItem('cart', JSON.stringify(state.query));
-
         }
     }
 })

@@ -6,57 +6,72 @@ import {
 } from "react-router-dom";
 
 import {Home} from "./components/Home/Home";
-import {Checkout} from "./components/ShoppingBasket/Checkout";
 import {CategoryView} from "./components/Category/CategoryView";
-import {Payment} from "./components/Payment/Payment";
-import {PaymentSuccess} from "./components/Payment/PaymentSuccess";
-import {PaymentFailure} from "./components/Payment/PaymentFailure";
-import {BuyNow} from "./components/Payment/BuyNow";
 import {Loading} from "./components/Loading/Loading";
 import {ProductPage} from "./components/Product/ProductPage";
-import { ManageProducts } from "./components/Management/Product/ManageProducts";
-import { ManageOrders } from "./components/Management/Order/ManageOrders.js";
-import { ManageCommunications } from "./components/Management/Communications/ManageCommunications";
-import { ManageBusiness } from "./components/Management/Business/ManageBusiness.js";
-import { ManageBatches } from "./components/Management/Batches/ManageBatches";
-import { ManageCategories } from "./components/Management/Categories/ManageCategories";
 
-import {Elements} from "@stripe/react-stripe-js";
-import {loadStripe} from "@stripe/stripe-js"
-
-const stripePromise = loadStripe("pk_test_51JPmphCtX7dC5Py8jrseqN21xhYQA6NSkXvaGwSJLu9hm9OE5C1d0yKudXPD2QaUZzcxn2EhRQktbJC7lPeXD8ZS00LYeEdIyG");
+import { categories } from "./categories";
+import { CategoryPage} from "./components/Category/CategoryPage";
+import {SearchResults} from "./components/Search/SearchResults";
+import {CharityList} from "./components/Charity/CharityList";
+import { CharityShop } from "./components/Charity/CharityShop";
+import { charities } from "./charities";
+import { NotFound } from "./components/NotFound";
+import { Checkout } from "./components/ShoppingBasket/Checkout";
 
 function App() {
- 
+
   return (
     <Router>
       <Switch>
+      
         <Route exact path='/' component={Home} /> 
-        <Route path="/product/:sku" component={ProductPage} />
-        <Route path="/catalogue/:category/:subCategory?" component={CategoryView} />
-        <Route path='/checkout' component={Checkout}/>         
-        <Route exact path="/payment">
-          <Elements stripe={stripePromise}>
-            <Payment />
-          </Elements>
-        </Route>
-        <Route path="/payment/success" component={PaymentSuccess} />
-        <Route path="/payment/failure" component={PaymentFailure} />
-        <Route exact path="/buy-now">
-          <Elements stripe={stripePromise}>
-            <BuyNow />
-          </Elements>
-        </Route>
-        <Route path="/manage/products" component={ManageProducts} />
-        <Route path="/manage/batches" component={ManageBatches} />
+        <Route path ="/search/:query" component={SearchResults} />
+        <Route path="/product/:itemId" component={ProductPage} />
         
-        <Route path="/manage/orders" component={ManageOrders} />
-        <Route path="/manage/communications" component={ManageCommunications} />
-        <Route path="/manage/business" component={ManageBusiness} />
-        <Route exact path="/manage/categories" component={ManageCategories} />
-        <Route path="/manage/categories/:category_id" component={ManageCategories} /> 
+        {categories.map( (category) => {
+          if(category.subcategories){
+            return(
+              <Route exact path={`/categories/${category.name}`} render={() => {
+                return <CategoryPage category={category} />
+              }} />
+            ) 
+            }
+          else{
+            return(
+              <Route exact path={`/categories/${category.name}`} render={() => {
+                return <CategoryView category={category} category_name={category.name} subcategory_name={''} />
+              }}/>
+          )} 
+          })}
 
+          {categories.map( (category) => {
+            if(category.subcategories){
+              return(
+                Object.keys(category.subcategories).map((key) => {
+                  return(
+                    <Route path={`/categories/${category.name}/${key}`} render={() => {
+                      return <CategoryView category_name={category.name} subcategory_name={key} category={category} />
+                    }}
+                  />
+                )})
+              )
+                  }
+            }
+          )}
+        
+        
+        <Route exact path="/charities" component={CharityList} />
+        {charities.map((charity) => {
+            return <Route path={`/charities/${charity.registrationId}`} render={() => {
+              return(
+                <CharityShop charity={charity} />
+              )
+            }} />
+        })}
+        <Route path="/wishlist" component={Checkout} />
         <Route path="/loading" component={Loading} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </Router>
   );

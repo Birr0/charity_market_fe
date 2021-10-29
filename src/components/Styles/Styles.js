@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
       position: 'absolute',
       top: 0,
       left: 0,
-      backgroundColor:"#e7e7e7",
+      backgroundColor:"white",
     },
 
     managementBar: {
@@ -34,7 +34,7 @@ export const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
       color: 'black',
-      fontFamily:'serif',
+      fontFamily:'stencil',
       marginRight: theme.spacing(1),
       fontWeight: '550',
       textDecoration: 'none',

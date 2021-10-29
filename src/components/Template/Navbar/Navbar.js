@@ -14,8 +14,10 @@ import {CatalogueDialog} from "./CatalogueDialog.js";
 import {SearchDialog} from "./SearchDialog.js";
 
 import {useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import { setBackdrop, setCatalogueBackdrop } from '../../../storage/widgetSlice.js';
+import { useHistory } from 'react-router';
 
 export default function Navbar() {
   const cart = useSelector(state => state.basket.cart);
@@ -26,18 +28,27 @@ export default function Navbar() {
   const [catalogueDialogOpen, openCatalogueDialog] = useState(false);
   const [searchDialogOpen, openSearchDialog] = useState(false);
 
+  const dispatch = useDispatch();
+  const history = useHistory();
 
+  const widgetController = useSelector(state => state.widget);
+  console.log(widgetController.backdropState);
   return(
     
     <div className={classes.root}>
-      {catalogueDialogOpen ? <><CatalogueDialog open={catalogueDialogOpen}/></> : null}
-    {searchDialogOpen ? <><SearchDialog /></> : null}
+      <CatalogueDialog />
+      
+      <SearchDialog />
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>    
             <Tooltip title="Home">
-              
-                <Link to="/" style={{'textDecoration': 'none'}}>
-                  <Typography variant={desktop ? 'h4' : 'h6'} className={classes.title}>Rogers'</Typography>
+                <Link to="/" style={{'textDecoration': 'none'}} onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(setBackdrop(false));
+                    dispatch(setCatalogueBackdrop(false));
+                    history.push('/');
+                  }}>
+                  <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>Charity Market</Typography>
                 </Link>
               
             </Tooltip>
@@ -46,8 +57,8 @@ export default function Navbar() {
                <IconButton aria-label="Catalgoue Menu" 
                 onClick={(e) => {
                     e.preventDefault();
-                    openSearchDialog(false);
-                    catalogueDialogOpen ? openCatalogueDialog(false) : openCatalogueDialog(true);
+                    dispatch(setBackdrop(false));
+                    widgetController.catalogueBackdropState ? dispatch(setCatalogueBackdrop(false)) : dispatch(setCatalogueBackdrop(true));
                   }}>
                <Tooltip title="Catalogue Menu"> 
                   <MenuIcon />
@@ -56,15 +67,15 @@ export default function Navbar() {
 
                   <IconButton aria-label="Search" onClick={(e) => {
                     e.preventDefault();
-                    openCatalogueDialog(false);
-                    searchDialogOpen ? openSearchDialog(false) : openSearchDialog(true);
+                    setCatalogueBackdrop(false);
+                    widgetController.backdropState ? dispatch(setBackdrop(false)) : dispatch(setBackdrop(true));
                   }}> 
                     <Tooltip title="Search">
                       <SearchIcon />
                     </Tooltip>
                   </IconButton>
-                  <Link to="/checkout">
-                    <Tooltip title="Basket">
+                  <Link to="/wishlist">
+                    <Tooltip title="Wishlist">
                       <IconButton>
                         <Badge badgeContent={cart.lineItems.length} color="secondary"><ShoppingBasketIcon /></Badge>
                       </IconButton>

@@ -1,15 +1,14 @@
 import {Link} from "react-router-dom";
-
+import { Typography } from "@material-ui/core";
 export const EmptyBasket = () => {
     return(
-        <>
-        <h1>Empty Basket</h1>
-        <p>You have nothing in your basket</p>
-        
-        <Link to="/">
-            <p>Go back to shopping</p>
-        </Link>
-        </>
+        <div style={{margin:"20px"}}>
+            <Typography variant="h3">Your wishlist is empty</Typography>
+            <Typography>Browse, find some items and you can keep them here for later!</Typography>
+            <Link to="/">
+                <Typography>Go back to shopping</Typography>
+            </Link>
+        </div>
     );
 
 }

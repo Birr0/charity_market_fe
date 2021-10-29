@@ -17,10 +17,11 @@ export const Checkout = () => {
     const cart = useSelector(state => state.basket.cart);
 
     return(
-        <>
+        
         <Template component={
-            <div>
-                <h1>Checkout</h1>
+            <>
+                <div>
+                
                 {cart.lineItems.length > 0 ?
                     <>
                         {cart.lineItems.map(item => {
@@ -32,19 +33,15 @@ export const Checkout = () => {
                                 </>
                             );
                         })}
-                        <Paper style={{maxWidth: "66.6%", marginLeft:"5px", backgroundColor:"#d9e6f2"}}>
-                            <p>Shipping: {cart.shipping}</p>          
-                            <p>Sub-Total: {cart.total} GBP</p>
-                            <hr></hr>
-                            <Button variant="outlined" onClick={() => dispatch(processCheckout(cart))}>Proceed to Pay</Button>
-                        </Paper>
+                        
                     </>
                 : <EmptyBasket />}
                 
             </div> 
+            </>
             
         }
         />
-        </>
+
     );
 }

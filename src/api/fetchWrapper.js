@@ -1,6 +1,6 @@
 import {apiURL} from "./apiURL"
 
-const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": apiURL};
+const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": apiURL, "Content-Type": "application/json" };
 
 export const Get = (endpoint) => {
 
@@ -18,15 +18,17 @@ export const Get = (endpoint) => {
 }
 
 export const Post = (endpoint, payload) => {   
+    console.log(JSON.stringify(payload));
+    
     return(
-        fetch(apiURL + endpoint, {method:'POST', body: payload, credentials: 'include' ,
+        fetch(apiURL + endpoint, {method:'POST', body: JSON.stringify(payload), credentials: 'include', "Content-Type": 'application/json' ,
             headers: HEADERS})
             .then(result => result.json())
             .then(resp => {
-                console.log(resp);
                 return(resp);
         })
         )
+    
     }
 
 
