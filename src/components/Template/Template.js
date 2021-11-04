@@ -1,15 +1,7 @@
-import { useSelector } from "react-redux";
-
 import Navbar from "./Footer/Footer";
 import Footer from "./Navbar/Navbar"
-import {Loading} from "../Loading/Loading";
 
-//component div needs theme padding?
-
-export const Template = ({component}) => {
-    //const loading = true;//useSelector(state => state.loading.loadingState);
-    const loading = useSelector(state => state.loading.loadingState);
-    
+export const Template = ({component}) => {    
     return(
         <div style={{minHeight:"100%", position: "relative"}}>
             <Navbar />    

@@ -1,10 +1,7 @@
-import React, {useEffect, useState} from "react";
-import { IconButton, Backdrop, Icon, useMediaQuery } from "@material-ui/core";
+import React, {useState} from "react";
+import { IconButton, Backdrop, useMediaQuery } from "@material-ui/core";
 import { ArrowBack, ArrowForward, Close} from "@material-ui/icons";
 
-
-//Add arrows to circle thrugh images
-//Zoom
 export const ImageViewer = ({src, viewerOpen, closeViewer, nextImages}) => {
     const [imgSrc, setImgSrc] = useState(src);
 
@@ -53,7 +50,7 @@ export const ImageViewer = ({src, viewerOpen, closeViewer, nextImages}) => {
                 </IconButton>
                <img 
                 alt=""
-                src={imgSrc} style={{maxWidth: (desktop ? "800px" : "66.6%")}} 
+                src={imgSrc} style={{maxWidth: (desktop ? "800px" : "66.6%"), maxHeight:"66.6%"}} 
                 />
                 <IconButton onClick={ (e) => {
                     e.preventDefault();

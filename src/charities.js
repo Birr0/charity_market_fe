@@ -1,5 +1,22 @@
 export const charities = [
     {
+        "charityOrgId": "19057",
+        "name": "St Roccos Hospice",
+        "missionStatement": "St Rocco's Hospice provide quality care and promote physical, social, psychological and spiritual wellbeing for patients with life limiting illness, and in doing so places patients, carers and families at the heart of everything we do.",
+        "website": "",
+        "logoImage": {
+            "imageUrl": "https://i.ebayimg.com/00/s/NTAwWDUwMA==/z/e-UAAOSwyEtgbIzi/$_1.JPG?set_id=8800005007"
+        },
+        "location": {
+            "address": {
+                "city": "",
+                "stateOrProvince": "",
+                "postalCode": ""
+            }
+        },
+        "registrationId": "511592"
+    },
+    {
         "charityOrgId": "99249",
         "name": "North Devon Hospice",
         "missionStatement": "North Devon Hospice is a local charity providing specialist care and support to patients and families affected by cancer, or other life-limiting illnesses. We believe in being there for all the family and all our care is provided completely free of charge",
@@ -122,7 +139,78 @@ export const charities = [
         "registrationId": "1066618",
         "featureReason": "Excellent reviews!"
     },
-    
+    {
+        "charityOrgId": "17719",
+        "name": "British Heart Foundation",
+        "missionStatement": "Heart and circulatory disease are the world's biggest killers. Together, we fund life saving research into these conditions like heart diseases, stroke and vascular dementia. Together, we can beat the heartbreak they cause.",
+        "website": "",
+        "logoImage": {
+            "imageUrl": "https://charity.ebay.co.uk/charity/charity.jsp?NP_ID=3194488"
+        },
+        "location": {
+            "address": {
+                "city": "",
+                "stateOrProvince": "",
+                "postalCode": ""
+            }
+        },
+        "registrationId": "225971",
+        "featureReason": ""
+    },
+    {
+        "charityOrgId": "20117",
+        "name": "RENEWAL NORTH WEST",
+        "missionStatement": "Renewal North West is a Christian charity helping the long term unemployed, homeless and people recovering from addiction by providing work experience, skills development, accommodation, life skills training helping people to rebuild their lives and bringing hope through Jesus Christ.",
+        "website": "",
+        "logoImage": {
+            "imageUrl": "https://i.ebayimg.com/00/s/NzUxWDE0MDg=/z/MMEAAOSw6cRgiZio/$_1.JPG?set_id=8800005007"
+        },
+        "location": {
+            "address": {
+                "city": "",
+                "stateOrProvince": "",
+                "postalCode": ""
+            }
+        },
+        "registrationId": "1145056",
+        "featureReason": ""
+    },
+    {
+        "charityOrgId": "146053",
+        "name": "THE MARY STEVENS HOSPICE",
+        "missionStatement": "Mary Stevens Hospice Based In The Black Country",
+        "website": "",
+        "logoImage": {
+            "imageUrl": "https://i.ebayimg.com/00/s/MTcyWDE4NQ==/z/KXsAAOSwFaBgq~nJ/$_1.JPG?set_id=8800004005"
+        },
+        "location": {
+            "address": {
+                "city": "",
+                "stateOrProvince": "",
+                "postalCode": ""
+            }
+        },
+        "registrationId": "517656",
+        "featureReason": ""
+    },
+    {
+        "charityOrgId": "157598",
+        "name": "Age Concern Durham County",
+        "missionStatement": "Age UK County Durham serves the older people of County Durham by giving advice, information and benefit checks. We also provide activities to help prevent loneliness and isolation. Our intergenerational work brings older and younger people together in innovative ways, breaking down barriers and stereotypes. We help those living with cancer, give advice about the dangers of scams, bring people together with food and run accredited training courses.",
+        "website": "",
+        "logoImage": {
+            "imageUrl": "https://charity.ebay.co.uk/charity/charity.jsp?NP_ID=3194488"
+        },
+        "location": {
+            "address": {
+                "city": "",
+                "stateOrProvince": "",
+                "postalCode": ""
+            }
+        },
+        "registrationId": "1122008",
+        "featureReason": ""
+    },
     {
         "charityOrgId": "15972",
         "name": "Make-A-Wish UK",

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { useHistory, useParams, MemoryRouter, Route } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { ProductArray } from "../Product/ProductArray";
 import { Template } from "../Template/Template";
 import {Post} from "../../api/fetchWrapper";
@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Pagination, PaginationItem} from '@material-ui/lab';
 import { Loading } from "../Loading/Loading";
 import { SearchFilter } from "./SearchFilter";
-import { useMediaQuery, Grid, IconButton, Tooltip, Button } from "@material-ui/core";
+import { useMediaQuery, Grid, IconButton, Tooltip } from "@material-ui/core";
 import { FilterList } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../storage/loadingSlice";
@@ -53,7 +53,7 @@ export const SearchResults = () => {
             );
         }
     
-    }, [params || pagination]);
+    }, [params || pagination ]);
     
 
     const [viewerOpen, openViewer] = useState(false);

@@ -28,7 +28,6 @@ export const CharityShop = ({charity}) => {
         Get(`/charity/${charity.registrationId}/products?page=${page}`).then(
             result => {  
                 setProducts(result);
-                console.log(products);
                 dispatch(setLoading(false));
             }
         )
@@ -45,7 +44,7 @@ export const CharityShop = ({charity}) => {
                 <Grid container direction="row" style={{marginTop:"20px", maxWidth:"1500px", marginLeft:"auto", marginRight:"auto"}}>
                     <Card style={{padding:"10px", border:"1px solid #e6e6e6", marginLeft:"5px", marginRight:"5px"}}>
                         <Grid item>
-                            <img src={charity.logoImage.imageUrl} style={{width:"200px"}} />
+                            <img src={charity.logoImage.imageUrl} style={{width:"200px"}} alt=''/>
                             <hr></hr>
                         </Grid>
                         <Grid item>

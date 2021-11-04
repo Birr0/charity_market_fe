@@ -9,7 +9,6 @@ import {Home} from "./components/Home/Home";
 import {CategoryView} from "./components/Category/CategoryView";
 import {Loading} from "./components/Loading/Loading";
 import {ProductPage} from "./components/Product/ProductPage";
-
 import { categories } from "./categories";
 import { CategoryPage} from "./components/Category/CategoryPage";
 import {SearchResults} from "./components/Search/SearchResults";
@@ -18,6 +17,7 @@ import { CharityShop } from "./components/Charity/CharityShop";
 import { charities } from "./charities";
 import { NotFound } from "./components/NotFound";
 import { Checkout } from "./components/ShoppingBasket/Checkout";
+import {About} from "./components/About";
 
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
       <Switch>
       
         <Route exact path='/' component={Home} /> 
+        <Route path='/about' component={About} />
         <Route path ="/search/:query" component={SearchResults} />
         <Route path="/product/:itemId" component={ProductPage} />
         
@@ -56,7 +57,10 @@ function App() {
                   />
                 )})
               )
-                  }
+              }
+              else{
+                return 0
+              }
             }
           )}
         

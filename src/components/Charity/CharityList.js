@@ -14,15 +14,16 @@ export const CharityList = () => {
     return(
         <Template component={
             <>
-                <Typography variant="h4" margin="10px">Charity sellers</Typography>
+                <Typography variant="h5" style={{margin:"20px"}}>Charity shops</Typography>
                 <Grid container  maxWidth="800px" justifyContent="center" style={{marginTop:"20px",}}>
+                    
                     {charities.slice(21*(page - 1), 21*(page)).map((charity) => {
                         return(
-                            <Grid item style={{margin:"10px", width:(desktop ? "200px" : "75%"), height:(desktop ? "300px" : "250px")}}>
+                            <Grid item style={{margin:"10px", width:(desktop ? "200px" : "300px"), height:(desktop ? "300px" : "250px")}}>
                                 <Link to={{pathname: `/charities/${charity.registrationId}`}} style={{textDecoration:"none"}}>
                                     <Tooltip title={charity.missionStatement} style={{size:"30px"}}>
                                         <Card>
-                                        <img src={charity.logoImage.imageUrl} style={{width:(desktop ? "200px" : "100%"), height:(desktop ? "125px": "175px")}}/>
+                                        <img src={charity.logoImage.imageUrl} style={{width:(desktop ? "200px" : "100%"), height:(desktop ? "125px": "175px")}} alt='' />
                                             <Typography style={{padding:"10px"}}><b>{charity.name}</b></Typography>
                                         </Card>
                                     </Tooltip>

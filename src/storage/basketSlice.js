@@ -16,9 +16,9 @@ export const basketSlice = createSlice({
                 if(item.sku === action.payload.sku){
                     item.quantity += 1;
                     itemFound = true;
-                    return;
+                    
                 }
-                
+                return itemFound
                 });
             }
 
@@ -40,6 +40,7 @@ export const basketSlice = createSlice({
                         item.quantity -= 1;
                         
                     }
+                    return item.quantity
                 })
             }
             else{

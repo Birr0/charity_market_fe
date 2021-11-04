@@ -1,7 +1,6 @@
 import React , {useEffect, useState} from "react";
 import {Template} from "../Template/Template";
 import {ProductView} from "../Product/ProductView";
-import { useLocation } from "react-router-dom";
 import { Get } from "../../api/fetchWrapper";
 import { Loading } from "../Loading/Loading";
 import { IconButton, Typography } from "@material-ui/core";
@@ -9,14 +8,7 @@ import { ArrowBack } from "@material-ui/icons";
 import { useParams } from "react-router";
 import { RecommendedProducts } from "./RecommendedProducts";
 export const ProductPage = () => {
-    // add API call here
-    // need to add standardised ID lookup in params here ..
-    const location = useLocation();
     const params = useParams();
-    console.log(location);
-    const productInfo = location.state ? location.state : {itemId : location.search};
-
-
     const [product, setProduct] = useState();
     const [charity, setCharity] = useState({});
 
@@ -28,7 +20,7 @@ export const ProductPage = () => {
                 setCharity(result.charity);
             }
         )
-    }, []);
+    });
 
     return(
         <Template component={

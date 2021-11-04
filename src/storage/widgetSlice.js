@@ -9,13 +9,11 @@ export const widgetSlice = createSlice({
     reducers: {
         setBackdrop: (state, action) => {
             state.backdropState = action.payload;
-            console.log(state, action);
             localStorage.setItem('_bd', action.payload);
             //what is required here?
         },
         setCatalogueBackdrop: (state, action) => {
             state.catalogueBackdropState = action.payload;
-            console.log(state, action);
             localStorage.setItem('cat_bd', action.payload);
         }
     }

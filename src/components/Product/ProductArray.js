@@ -4,13 +4,9 @@ import Typography from "@material-ui/core/Typography";
 import {Link} from "react-router-dom";
 import { Loading } from "../Loading/Loading";
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useDispatch, useSelector } from "react-redux"; 
 
-//if productArray > threshold, include pagination
-
-export const ProductArray = ({products, query}) => {
+export const ProductArray = ({products}) => {
     const desktop = useMediaQuery('(min-width:600px)');  
-    console.log(products);
     return(
             <div>
                 

@@ -18,8 +18,6 @@ export const Get = (endpoint) => {
 }
 
 export const Post = (endpoint, payload) => {   
-    console.log(JSON.stringify(payload));
-    
     return(
         fetch(apiURL + endpoint, {method:'POST', body: JSON.stringify(payload), credentials: 'include', "Content-Type": 'application/json' ,
             headers: HEADERS})
@@ -40,7 +38,6 @@ export const Put = (endpoint, payload) => {
             result.json()
         )
         .then(resp => {
-            console.log(resp);
             return(resp);
     }))
 }

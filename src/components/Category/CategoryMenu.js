@@ -24,7 +24,7 @@ export const CategoryMenu = () => {
                                     dispatch(addToCategoriesViewed(category));
                                 }}>
                                     
-                                    <img src={category.categoryImage ? category.categoryImage : ''} width="100%"/>
+                                    <img src={category.categoryImage ? category.categoryImage : ''} alt="" width="100%"/>
                                     <Typography style={{padding:"10px"}}><b>{category.title}</b></Typography>
                                 </Card>
                             </Link>

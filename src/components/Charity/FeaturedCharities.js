@@ -102,11 +102,9 @@ export const FeaturedCharities = () => {
                     <Grid item  style={{margin:"5px"}}>
                         <Link to={{pathname: `/charities/${charity.registrationId}`}} style={{textDecoration:"none"}}>
                             <Tooltip title={charity.missionStatement} style={{size:"30px"}}>
-                                <Card style={{width:(desktop ? "300px": ''), height:(desktop ? "300px": ''), alignItems:"center"}}>
-                                    <Card style={{backgroundColor:"#90ee90"}}>
-                                        <p>{charity.featureReason ? charity.featureReason : null}</p>
-                                    </Card>
-                                    <img src={charity.logoImage.imageUrl} style={{width:(desktop ? "200px" : "100%"), height:(desktop ? "125px": "175px")}}/>
+                                <Card style={{width:(desktop ? "200px": '300px'), height:(desktop ? "200px": '300px'), alignItems:"center"}}>
+                                    
+                                    <img src={charity.logoImage.imageUrl} style={{width:(desktop ? "200px" : "100%"), height:(desktop ? "125px": "175px")}} alt=''/>
                                     <hr></hr>
                                     <Typography style={{padding:"10px"}}><b>{charity.name}</b></Typography>
                                 </Card>

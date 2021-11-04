@@ -1,5 +1,4 @@
-import { Backdrop, CircularProgress, LinearProgress, Typography } from "@material-ui/core";
-import {Template} from "../Template/Template";
+import { Backdrop, LinearProgress } from "@material-ui/core";
 
 // how to add text to backdrop
 

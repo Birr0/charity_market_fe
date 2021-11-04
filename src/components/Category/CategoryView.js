@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from "react";
-import { useHistory, useParams, MemoryRouter, Route } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { ProductArray } from "../Product/ProductArray";
 import { Template } from "../Template/Template";
 import {Post} from "../../api/fetchWrapper";
 import { Link, useLocation } from "react-router-dom";
 import { Pagination, PaginationItem, Autocomplete} from '@material-ui/lab';
 import { Loading } from "../Loading/Loading";
-import { SearchFilter } from "../Search/SearchFilter";
 import { useMediaQuery, Grid, IconButton, Tooltip, Button,
      Checkbox, TextField, Card, Typography, Slider,
-      FormControlLabel, Switch, Backdrop, Breadcrumbs, CircularProgress } from "@material-ui/core";
+        Backdrop, Breadcrumbs, CircularProgress } from "@material-ui/core";
 import { FilterList } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../storage/loadingSlice";
@@ -23,12 +22,8 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
 const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
-    
-    const dispatch = useDispatch();
-
     const history = useHistory();
     const location = useLocation();
-    console.log( mobile, category, subcategory_name);
     
     const [products, setProducts] = useState();
     const [_loading, _setLoading] = useState();
@@ -37,7 +32,7 @@ const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
         _setLoading(true);
         let _category = category;
         if (subcategory_name){
-            Post(`/categories/${category['name']}?subcategory_name=${subcategory_name}}limit=1&page=1`, _category).then(
+            Post(`/categories/${category['name']}?subcategory_name=${subcategory_name}&limit=1&page=1`, _category).then(
                 result => {
                     setProducts(result);
                     _setLoading(false);
@@ -52,10 +47,10 @@ const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
             }
         )
         }
-    },[])
+    },[category || subcategory_name])
 
     return(
-        <Card style={{marginBottom:"10px", marginTop:(mobile ? "0px" : "0px"), width:(mobile ? "75%" : "100%"), padding:"10px"}}>
+        <Card style={{marginBottom:"10px", marginTop:(mobile && !_loading ? "900px" : "0px"), width:(mobile ? "75%" : "100%"), padding:"10px"}}>
             <Typography variant='h5'><b>Filter</b></Typography>
             <hr></hr>
             <Formik
@@ -85,6 +80,7 @@ const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
                     }
                     temp_str += '}';
                     aspect_filter_string += temp_str;
+                    return
                 })
                 let filter_string = 'charityOnly:true,';
                 Object.keys(values.filter).map((key, value) => {
@@ -101,24 +97,31 @@ const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
               }
             >
               {(props) => (
+                 
                 <form onSubmit={props.handleSubmit}>
-                <Typography><b>Price</b></Typography>
                 
-                <Slider
-                    getAriaLabel={() => 'Price range'}
-                    min={0}
-                    step={1}
-                    max={1000}
-                    marks={[{value: 0, label: '£ 0'}, {value: 1000, label: '£ 1,000'}]}
-                    value={props.values.filter.price}
-                    onChange={(e, price) => {
-                      props.setFieldValue('filter.price', price);
-                    }}
-                    valueLabelDisplay="auto"
-                    style={{width:"90%", display:"flex", justifyContent:"center"}}
-                />
-                
-                <Typography><b>Condition</b></Typography>
+                {products && products.refinement ? 
+                    <>
+                    <Typography><b>Price</b></Typography>
+                    <Slider
+                        getAriaLabel={() => 'Price range'}
+                        min={0}
+                        step={1}
+                        max={1000}
+                        marks={[{value: 0, label: '£ 0'}, {value: 1000, label: '£ 1,000'}]}
+                        value={props.values.filter.price}
+                        onChange={(e, price) => {
+                        props.setFieldValue('filter.price', price);
+                        }}
+                        valueLabelDisplay="auto"
+                        style={{width:"90%", display:"flex", justifyContent:"center"}}
+                    />
+                    
+                    <Typography><b>Condition</b></Typography>
+                    </>
+                    : _loading ? null : <Typography>No filters available</Typography>}
+                    
+                    
                 {_loading ? <CircularProgress /> :
                 products && products.refinement ?
                 <>
@@ -148,37 +151,6 @@ const CategoryFilterForm = ({ mobile, category, subcategory_name}) => {
                     )}
                     />
                     
-                    
-                    <Typography><b>Returns accepted only</b></Typography>
-                    <FormControlLabel
-                        control={
-                        <Switch
-                            checked = {props.values.returns_accepted}
-                            onChange={(e, newValue) => {
-                            props.setFieldValue('returns_accepted', newValue);
-                            }}
-                            
-                            color="primary"
-                        />
-                        }
-                        label={!props.values.returns_accepted ? 'All items displayed' : 'Returnable items only'}
-                    />
-                    
-                    <FormControlLabel
-                        control={
-                        <Switch
-                            checked={props.values.search_in_description}
-                            onChange={(e, newValue) => {
-                            //props.setFieldValue('filter.search_in_description', newValue);
-                                console.log(newValue);
-                            }}
-                            
-                            color="primary"
-                        />
-                        }
-                        label={!props.values.search_in_description ? 'Include suggested' : 'Matching keyword only'}
-                    />
-                   
                     { products.refinement.aspectDistributions ? products.refinement.aspectDistributions.map((item, key) => {
                             
                         return(
@@ -263,15 +235,12 @@ export const CategoryView = ({category_name, subcategory_name, category}) => {
         dispatch(setLoading(true));
         
         let _category = category;
-        console.log(location.state);
         if(subcategory_name){
             Post(`/categories/${category_name}?subcategory_name=${subcategory_name}&limit=39&page=${pagination.get('page') ? pagination.get('page') : 1}&${location.state.aspect_filter ? location.state.aspect_filter : ''}&${location.state.filter ? location.state.filter : ''}`, _category).then(
                 result => {
                     setProducts(result);
-                    console.log(result);
                 }
             ).then(() => {
-                console.log(products);
                 dispatch(setLoading(false));
             })
         }
@@ -279,10 +248,8 @@ export const CategoryView = ({category_name, subcategory_name, category}) => {
             Post(`/categories/${category_name}?limit=39&page=${pagination.get('page') ? pagination.get('page') : 1}&aspect_filter=${location.state.aspect_filter ? location.state.aspect_filter : ''}&filter=${location.state.filter ? location.state.filter : ''}`, _category).then(
                 result => {
                     setProducts(result);
-                    console.log(result);
                 }
             ).then(() => {
-                console.log(products);
                 dispatch(setLoading(false));
             })
         }

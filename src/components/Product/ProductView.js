@@ -11,8 +11,8 @@ import Rating from '@material-ui/lab/Rating';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import {useState} from "react";
-import { IconButton, Toolbar, useMediaQuery } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { IconButton, useMediaQuery } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import { LocalShippingSharp } from "@material-ui/icons";
 import { Tooltip } from "@material-ui/core";
 import ShoppingBasket from "@material-ui/icons/ShoppingBasket";
@@ -103,7 +103,7 @@ export const ProductView = ({productData}) => {
                             <Grid style={{marginTop:"10px", marginBottom:"10px"}}>
                                 <Typography variant='h6'><b>{productData.price} {productData.currency}</b></Typography>
                                 {wishlist ? <Card style={{backgroundColor:"#77dd77", padding:"5px", maxWidth:"200px"}}><Typography><b>Item added to wishlist!</b></Typography></Card> : null}
-                                <a target="_blank" href={`${productData.itemWebUrl}`}>
+                                <a target="_blank" rel="noreferrer" href={`${productData.itemWebUrl}`}>
                                     <Button variant="outlined" style={{marginTop:"10px", backgroundColor:"white"}}
                                     >Buy Now</Button>       
                                 </a> 
@@ -220,6 +220,9 @@ export const ProductView = ({productData}) => {
                                     <Typography>- {d.innerText}</Typography>    
                                 </AccordionDetails>
                             )}
+                        else{
+                            return 0;
+                        }
                     }) : null}  
                         
                 </Accordion>

@@ -8,12 +8,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from "@material-ui/core/Badge";
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 
 import {useStyles} from "../../Styles/Styles.js";
 import {CatalogueDialog} from "./CatalogueDialog.js";
 import {SearchDialog} from "./SearchDialog.js";
 
-import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import { setBackdrop, setCatalogueBackdrop } from '../../../storage/widgetSlice.js';
@@ -25,14 +25,11 @@ export default function Navbar() {
   const desktop = useMediaQuery('(min-width:600px)')
   const classes = useStyles();
 
-  const [catalogueDialogOpen, openCatalogueDialog] = useState(false);
-  const [searchDialogOpen, openSearchDialog] = useState(false);
-
   const dispatch = useDispatch();
   const history = useHistory();
 
   const widgetController = useSelector(state => state.widget);
-  console.log(widgetController.backdropState);
+
   return(
     
     <div className={classes.root}>
@@ -42,13 +39,13 @@ export default function Navbar() {
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>    
             <Tooltip title="Home">
-                <Link to="/" style={{'textDecoration': 'none'}} onClick={(e) => {
+                <Link to="/" style={{'textDecoration': 'none', 'color':'black'}} onClick={(e) => {
                     e.preventDefault();
                     dispatch(setBackdrop(false));
                     dispatch(setCatalogueBackdrop(false));
                     history.push('/');
                   }}>
-                  <Typography variant={desktop ? 'h4' : 'h5'} className={classes.title}>Charity Market</Typography>
+                  <Typography variant={desktop ? 'h3' : 'h4'} >Thrift Market</Typography>
                 </Link>
               
             </Tooltip>
@@ -78,6 +75,13 @@ export default function Navbar() {
                     <Tooltip title="Wishlist">
                       <IconButton>
                         <Badge badgeContent={cart.lineItems.length} color="secondary"><ShoppingBasketIcon /></Badge>
+                      </IconButton>
+                    </Tooltip>
+                  </Link>
+                  <Link to="/about">
+                    <Tooltip title="About/Contact">
+                      <IconButton>
+                        <HelpOutlineIcon />
                       </IconButton>
                     </Tooltip>
                   </Link>
