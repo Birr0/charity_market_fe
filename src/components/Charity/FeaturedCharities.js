@@ -97,9 +97,9 @@ export const FeaturedCharities = () => {
     ]
     return(
         <Grid container justifyContent="center">
-            {charities.map((charity) => {
+            {charities.map((charity, key) => {
                 return(
-                    <Grid item  style={{margin:"5px"}}>
+                    <Grid key={key} item  style={{margin:"5px"}}>
                         <Link to={{pathname: `/charities/${charity.registrationId}`}} style={{textDecoration:"none"}}>
                             <Tooltip title={charity.missionStatement} style={{size:"30px"}}>
                                 <Card style={{width:(desktop ? "200px": '300px'), height:(desktop ? "200px": '300px'), alignItems:"center"}}>

@@ -11,13 +11,13 @@ export const CategoryMenu = () => {
     const dispatch = useDispatch();
 
     const direction = (desktop ? "row" : "column");
-    const justifyContent = (desktop ? "space-around" : "")
+    const justifyContent = (desktop ? "space-around" : "center")
     return(
         <div>
-            <Grid container direction={direction} justifyContent={justifyContent} spacing={50}>
-                {categories.map((category) => {
+            <Grid container direction={direction} justifyContent={justifyContent} spacing={10}>
+                {categories.map((category, key) => {
                     return(
-                        <Grid item>
+                        <Grid item key={key}>
                             <Link to={`/categories/${category.name}`} style={{textDecoration:"none"}}>
                                 <Card style={{width:(!desktop ? "300px" : "275px"), marginLeft:(!desktop ? 'auto' : ''), marginRight:(!desktop ? 'auto' : ''), marginBottom:(!desktop ? "20px" : '10px')}} onClick={(e) => {
                                     dispatch(setCatalogueBackdrop(false));

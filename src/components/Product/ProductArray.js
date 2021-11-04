@@ -19,11 +19,11 @@ export const ProductArray = ({products}) => {
                             justifyContent="center"
                             alignItems="flex-end"
                             container 
-                            spacing={30}>
+                            spacing={10}>
                             {products.itemSummaries ? products['itemSummaries'].map((product, key) => {
                             return( //replace with ID
-                                <Link to={{pathname: `/product/${encodeURIComponent(product.itemId)}`, state:product ? product : {itemId: product.itemId} }} style={{'textDecoration': 'none'}} >
-                                    <Grid item key={key}  style={{width:(desktop ? "250px" : "300px") , height: (desktop ? "250px" : ''), margin:"20px"}}>
+                                <Link key={key} to={{pathname: `/product/${encodeURIComponent(product.itemId)}`, state:product ? product : {itemId: product.itemId} }} style={{'textDecoration': 'none'}} >
+                                    <Grid item style={{width:(desktop ? "250px" : "300px") , height: (desktop ? "250px" : ''), margin:"20px"}}>
                                         <Card style={{padding:"5px"}} >     
                                             <div style={{display:"flex", justifyContent:"center"}}>    
                                                 <img 

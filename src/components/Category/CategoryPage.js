@@ -19,7 +19,7 @@ export const CategoryPage = ({category}) => {
                 <div style={{margin:"10px"}}>
                     <Typography variant='h5'>{category.title}</Typography>
                 </div>
-                <Grid container direction={direction} spacing={5} justifyContent={justifyContent}>
+                <Grid container direction={direction} spacing={5} justifyContent='center'>
                     {Object.keys(category.subcategories).map((key, value) => {
                         return(
                             <Grid item>

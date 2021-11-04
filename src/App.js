@@ -30,28 +30,28 @@ function App() {
         <Route path ="/search/:query" component={SearchResults} />
         <Route path="/product/:itemId" component={ProductPage} />
         
-        {categories.map( (category) => {
+        {categories.map( (category, key) => {
           if(category.subcategories){
             return(
-              <Route exact path={`/categories/${category.name}`} render={() => {
+              <Route key={key} exact path={`/categories/${category.name}`} render={() => {
                 return <CategoryPage category={category} />
               }} />
             ) 
             }
           else{
             return(
-              <Route exact path={`/categories/${category.name}`} render={() => {
+              <Route  key={key} exact path={`/categories/${category.name}`} render={() => {
                 return <CategoryView category={category} category_name={category.name} subcategory_name={''} />
               }}/>
           )} 
           })}
 
-          {categories.map( (category) => {
+          {categories.map( (category, k) => {
             if(category.subcategories){
               return(
                 Object.keys(category.subcategories).map((key) => {
                   return(
-                    <Route path={`/categories/${category.name}/${key}`} render={() => {
+                    <Route key={k} path={`/categories/${category.name}/${key}`} render={() => {
                       return <CategoryView category_name={category.name} subcategory_name={key} category={category} />
                     }}
                   />
@@ -66,8 +66,8 @@ function App() {
         
         
         <Route exact path="/charities" component={CharityList} />
-        {charities.map((charity) => {
-            return <Route path={`/charities/${charity.registrationId}`} render={() => {
+        {charities.map((charity, key) => {
+            return <Route key={key} path={`/charities/${charity.registrationId}`} render={() => {
               return(
                 <CharityShop charity={charity} />
               )

@@ -64,9 +64,9 @@ export const SearchDialog = () => {
                     </Formik>
                 <div style={{margin:"10px"}}>
                     <Typography variant="h5">Trending searches</Typography>
-                    {trendingSearches.map((search) => {
+                    {trendingSearches.map((search, key) => {
                         return(
-                            <Card style={{padding:"5px", width:"200px", margin:"5px"}}>
+                            <Card key={key} style={{padding:"5px", width:"200px", margin:"5px"}}>
                                 <Typography variant="h6" onClick={(e) => {
                                     e.preventDefault();
                                     dispatch(setBackdrop(false));
