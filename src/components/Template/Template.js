@@ -6,12 +6,11 @@ export const Template = ({component}) => {
         <div style={{minHeight:"100%", position: "relative"}}>
             <Navbar />    
             
-                <div> 
+                <div style={{marginTop:"80px"}}> 
                     {component}
                 </div>
             
             <Footer />
-    
         </div>
     );
 }

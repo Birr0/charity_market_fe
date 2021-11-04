@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     appBar: {
-      position: 'absolute',
+      position: 'fixed',
       top: 0,
       left: 0,
       backgroundColor:"white",
