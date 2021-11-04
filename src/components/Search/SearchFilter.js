@@ -1,12 +1,6 @@
-import { Backdrop, Card, Button, Slider, Typography,
-        IconButton, Checkbox, FormControlLabel,
-        TextField, Switch
-    } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import { Backdrop, Card, Button, Slider, Typography, IconButton} from "@material-ui/core";
 import React from "react";
 import {Close } from '@material-ui/icons';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../../storage/loadingSlice";
