@@ -17,7 +17,7 @@ export const userSlice = createSlice({
         },
         addToCategoriesViewed: (state, action) => {
             let viewedCategory = action.payload;
-            console.log(viewedCategory);
+
             state.categoriesViewed.push(viewedCategory);
             localStorage.setItem('categoriesViewed', JSON.stringify(state.categoriesViewed));
         },
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
             localStorage.setItem('clickThroughs', JSON.stringify(state.clickThroughs));
         },
         addSearch: (state, action) => {
-            console.log(state, action.payload);
+          
             if(state.searches[action.payload.search]){
                 state.searches[action.payload.search] += 1
             }
