@@ -1,6 +1,8 @@
 import {apiURL} from "./apiURL"
 
-const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": apiURL, "Content-Type": "application/json" };
+const origin = 'https://www.thriftmarket.co.uk/';
+
+const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": origin, "Content-Type": "application/json" };
 
 export const Get = (endpoint) => {
 
