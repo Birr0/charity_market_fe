@@ -62,7 +62,7 @@ export const CharityShop = ({charity}) => {
                         <Typography variant="h6"><b>Products that support {charity.name}</b></Typography>
                         <ProductArray products={products} />
                         <Pagination
-                        style={{display:"flex", justifyContent:"center", marginTop:"20px"}}
+                        style={{display:"flex", justifyContent:"center", marginTop:"60px"}}
                             count={Math.round(products.total/39)}
                             defaultPage={pagination.get('page') || 1}
                             variant="outlined" color="primary"

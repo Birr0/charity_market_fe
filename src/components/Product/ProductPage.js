@@ -20,7 +20,7 @@ export const ProductPage = () => {
                 setCharity(result.charity);
             }
         )
-    });
+    }, []);
 
     return(
         <Template component={
@@ -43,7 +43,8 @@ export const ProductPage = () => {
                         
                     </div>
                     <Typography variant="h5">Products you may like</Typography>
-                    <RecommendedProducts />
+                    
+                    <RecommendedProducts/>
                 </div>
          : <Loading />
         }

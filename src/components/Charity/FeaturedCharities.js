@@ -106,7 +106,7 @@ export const FeaturedCharities = () => {
                                     
                                     <img src={charity.logoImage.imageUrl} style={{width:(desktop ? "200px" : "100%"), height:(desktop ? "125px": "175px")}} alt=''/>
                                     <hr></hr>
-                                    <Typography style={{padding:"10px"}}><b>{charity.name}</b></Typography>
+                                    <Typography style={{padding:"5px"}}><b>{charity.name}</b></Typography>
                                 </Card>
                             </Tooltip>
                         </Link>

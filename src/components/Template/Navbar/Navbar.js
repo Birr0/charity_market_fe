@@ -45,7 +45,7 @@ export default function Navbar() {
                     dispatch(setCatalogueBackdrop(false));
                     history.push('/');
                   }}>
-                  <Typography variant={desktop ? 'h3' : 'h4'} >Thrift Market</Typography>
+                  <Typography variant={desktop ? 'h3' : 'h5'} >Thrift Market</Typography>
                 </Link>
               
             </Tooltip>
@@ -78,13 +78,7 @@ export default function Navbar() {
                       </IconButton>
                     </Tooltip>
                   </Link>
-                  <Link to="/about">
-                    <Tooltip title="About/Contact">
-                      <IconButton>
-                        <HelpOutlineIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Link>
+                  
             </div>
         </Toolbar>
       </AppBar>
@@ -92,3 +86,13 @@ export default function Navbar() {
     
   );
 }
+
+/*
+<Link to="/about">
+  <Tooltip title="About/Contact">
+    <IconButton>
+      <HelpOutlineIcon />
+    </IconButton>
+  </Tooltip>
+</Link>
+*/

@@ -29,7 +29,7 @@ export const LineItem = ({productData, remove}) => {
                 </Grid>
                 {remove ? 
                 <Grid item>     
-                    <Tooltip title="Remove from basket">
+                    <Tooltip title="Remove from wishlist">
                         <IconButton aria-label="Add To Basket" onClick={
                             (e) => {
                                 e.preventDefault();

@@ -26,7 +26,9 @@ export const RecommendedProducts = () => {
     
     return(
         products ? 
+        <div style={{marginTop:"20px"}}>
             <ProductArray products={products} />
+        </div>
         : null
     )
 
