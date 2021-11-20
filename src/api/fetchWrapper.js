@@ -16,7 +16,6 @@ export const Get = (endpoint) => {
                 )
     )
     
-
 }
 
 export const Post = (endpoint, payload) => {   
