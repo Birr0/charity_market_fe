@@ -11,7 +11,9 @@ Search through 1000s of products from charity sellers.
 #### Categories
 
 Browse through categories
+
 <img src="/screenshots/categories.png" />
 
 An example from the 'Art' category
-<img src="/screenshots/" />
+
+<img src="/screenshots/categories.gif" />
