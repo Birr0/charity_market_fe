@@ -1,6 +1,6 @@
 import {apiURL} from "./apiURL"
 
-const origin = 'https://www.thriftmarket.co.uk'; //'http://localhost:8000'
+const origin = 'http://localhost:8000' //'https://www.thriftmarket.co.uk'; //
 
 const HEADERS = {'Access-Control-Allow-Credentials': true, "Access-Control-Allow-Origin": origin, "Content-Type": "application/json" };
 
