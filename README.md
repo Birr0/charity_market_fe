@@ -16,4 +16,4 @@ Browse through categories
 
 An example from the 'Art' category
 
-<img src="/screenshots/categories.gif" />
+<img src="/screenshots/art.gif" />
